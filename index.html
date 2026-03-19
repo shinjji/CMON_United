@@ -114,7 +114,7 @@
   /* nav removed */
 
   /* CONTENT */
-  .content { position: relative; z-index: 2; padding: 20px 20px 80px; }
+  .content { position: relative; z-index: 2; padding: 20px 20px 20px; }
   .view { display: none; }
   .view.active { display: block; }
 
@@ -149,12 +149,13 @@
     box-shadow: 1px 1px 0 var(--border-ink);
   }
 
-  .filter-btn.all-btn.active      { background: var(--ink); color: var(--yellow); }
-  .filter-btn.hero-btn.active     { background: var(--blue); color: var(--white); }
-  .filter-btn.villain-btn.active  { background: var(--purple); color: var(--white); }
-  .filter-btn.antihero-btn.active { background: #B85C00; color: var(--white); }
-  .filter-btn.pet-btn.active      { background: var(--green); color: var(--white); }
-  .filter-btn.unplayed-btn.active { background: var(--red); color: var(--white); }
+  .filter-btn.all-btn.active        { background: var(--ink); color: var(--yellow); }
+  .filter-btn.hero-btn.active       { background: var(--blue); color: var(--white); }
+  .filter-btn.villain-btn.active    { background: var(--red); color: var(--white); }
+  .filter-btn.antihero-btn.active   { background: var(--purple); color: var(--white); }
+  .filter-btn.companion-btn.active  { background: #E07000; color: var(--white); }
+  .filter-btn.new-toggle            { border-style: dashed; }
+  .filter-btn.new-toggle.new-active { background: var(--red); color: var(--white); border-style: solid; }
 
   /* WAVE HEADERS */
   .wave-header { display: flex; align-items: center; gap: 12px; margin: 24px 0 12px; }
@@ -177,7 +178,7 @@
   /* CHARACTER CARDS */
   .roster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
     gap: 14px;
   }
 
@@ -201,9 +202,9 @@
   .char-card:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--border-ink); }
 
   .char-card::before { content:''; display:block; height:5px; background: var(--blue); }
-  .char-card.is-villain::before  { background: var(--purple); }
-  .char-card.is-antihero::before { background: linear-gradient(90deg, var(--blue) 50%, var(--purple) 50%); }
-  .char-card.is-pet::before      { background: var(--green); }
+  .char-card.is-villain::before    { background: var(--red); }
+  .char-card.is-antihero::before   { background: var(--purple); }
+  .char-card.is-companion::before  { background: #E07000; }
 
   .char-art-wrap {
     position: relative; width: 100%; aspect-ratio: 1/1;
@@ -253,10 +254,10 @@
     text-transform: uppercase; padding: 1px 6px; border: 2px solid;
   }
 
-  .ctag-hero     { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
-  .ctag-villain  { background: #F3E6FF; color: var(--purple); border-color: var(--purple); }
-  .ctag-antihero { background: #FFF0D6; color: #B85C00; border-color: #B85C00; }
-  .ctag-pet      { background: #E6FFF0; color: #1A7A3A; border-color: #1A7A3A; }
+  .ctag-hero      { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+  .ctag-villain   { background: #FFE6E6; color: var(--red); border-color: var(--red); }
+  .ctag-antihero  { background: #F3E6FF; color: var(--purple); border-color: var(--purple); }
+  .ctag-companion { background: #FFF0D6; color: #E07000; border-color: #E07000; }
 
   .char-card.is-done { opacity: 0.5; }
   .char-card.is-done:hover { opacity: 1; }
@@ -514,10 +515,10 @@
     padding:2px 10px; border:2px solid var(--border-ink); margin-bottom:14px;
   }
 
-  .modal-type-badge.hero     { background:var(--blue); color:var(--white); }
-  .modal-type-badge.villain  { background:var(--purple); color:var(--white); }
-  .modal-type-badge.antihero { background:#B85C00; color:var(--white); }
-  .modal-type-badge.pet      { background:var(--green); color:var(--white); }
+  .modal-type-badge.hero      { background:var(--blue); color:var(--white); }
+  .modal-type-badge.villain   { background:var(--red); color:var(--white); }
+  .modal-type-badge.antihero  { background:var(--purple); color:var(--white); }
+  .modal-type-badge.companion { background:#E07000; color:var(--white); }
 
   .modal-checks { display:flex; gap:16px; margin-bottom:14px; }
 
@@ -592,7 +593,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 160px);
     padding: 20px 0;
   }
 
@@ -601,7 +601,7 @@
     flex-direction: column;
     gap: 24px;
     width: 100%;
-    max-width: 840px;
+    max-width: 718px;
   }
 
   .home-btn {
@@ -634,7 +634,7 @@
   @media (min-width: 700px) {
     .home-buttons {
       flex-direction: row;
-      max-width: 1380px;
+      max-width: 1180px;
     }
 
     .home-btn {
@@ -654,7 +654,7 @@
     opacity: 0.7;
     transition: opacity 0.25s, transform 0.25s;
     display: none; /* shown via JS */
-    width: 690px;
+    width: 590px;
   }
 
   .side-arrow img {
@@ -665,13 +665,13 @@
 
   /* Right: peeking in from right, 65% off screen (690 * 0.65 = 449px) */
   .side-arrow.right {
-    right: -449px;
+    right: -384px;
     transform: translateY(-50%);
   }
 
   /* Left: peeking in from left, 65% off screen */
   .side-arrow.left {
-    left: -449px;
+    left: -384px;
     transform: translateY(-50%);
   }
 
@@ -686,6 +686,110 @@
   }
 
   .side-arrow:active { opacity: 0.8; }
+
+  /* LIST VIEW */
+  .list-filter-select {
+    background: var(--white);
+    border: 3px solid var(--border-ink);
+    padding: 8px 12px;
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    outline: none;
+    box-shadow: 3px 3px 0 var(--border-ink);
+    cursor: pointer;
+    transition: box-shadow 0.1s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231A1008' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+  }
+
+  .list-filter-select:focus { box-shadow: 4px 4px 0 var(--blue); border-color: var(--blue); }
+
+  .filter-btn.list-toggle { border-style: dashed; margin-left: auto; }
+  .filter-btn.list-toggle.active {
+    background: var(--ink); color: var(--yellow);
+    border-style: solid;
+    transform: translate(2px,2px);
+    box-shadow: 1px 1px 0 var(--border-ink);
+  }
+
+  .list-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid var(--border-ink);
+    box-shadow: 5px 5px 0 var(--border-ink);
+    background: var(--white);
+  }
+
+  .list-table th {
+    background: var(--ink);
+    color: var(--yellow);
+    font-family: 'Bangers', cursive;
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 10px 14px;
+    text-align: left;
+    border-right: 2px solid rgba(255,255,255,0.1);
+    white-space: nowrap;
+  }
+
+  .list-table th:last-child { border-right: none; }
+
+  .list-table td {
+    padding: 8px 14px;
+    border-bottom: 2px solid var(--panel-tan);
+    border-right: 2px solid var(--panel-tan);
+    font-size: 13px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+
+  .list-table td:last-child { border-right: none; }
+
+  .list-table tr:last-child td { border-bottom: none; }
+
+  .list-table tr:nth-child(even) td { background: var(--panel-cream); }
+
+  .list-table tr:hover td { background: #EBF2FF; cursor: pointer; }
+
+  .list-thumb {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border: 2px solid var(--border-ink);
+    display: block;
+  }
+
+  .list-thumb-placeholder {
+    width: 36px;
+    height: 36px;
+    background: var(--panel-tan);
+    border: 2px solid var(--border-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
+    color: rgba(26,16,8,0.2);
+  }
+
+  .list-status {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 2px solid;
+  }
+
+  .list-status.done     { background: #E6FFE6; color: var(--green); border-color: var(--green); }
+  .list-status.pending  { background: #FFE6E6; color: var(--red); border-color: var(--red); }
+  .list-status.na       { background: var(--panel-tan); color: #aaa; border-color: #ccc; }
 </style>
 </head>
 <body>
@@ -699,16 +803,47 @@
 
   <!-- ROSTER -->
   <div class="view" id="view-roster">
-    <div class="roster-controls">
+    <!-- GRID VIEW CONTROLS -->
+    <div class="roster-controls" id="gridControls">
       <input class="search-box" type="text" id="searchBox" placeholder="Search by name or set…" oninput="renderRoster()">
+      <button class="filter-btn" onclick="resetGridFilters()" title="Clear filters">✕</button>
       <button class="filter-btn all-btn active"        onclick="setFilter('all',this)">All</button>
       <button class="filter-btn hero-btn"              onclick="setFilter('hero',this)">Heroes</button>
       <button class="filter-btn villain-btn"           onclick="setFilter('villain',this)">Villains</button>
       <button class="filter-btn antihero-btn"          onclick="setFilter('antihero',this)">Anti-Heroes</button>
-      <button class="filter-btn pet-btn"               onclick="setFilter('pet',this)">Pets</button>
-      <button class="filter-btn unplayed-btn"          onclick="setFilter('unplayed',this)">Unplayed</button>
+      <button class="filter-btn companion-btn"         onclick="setFilter('companion',this)">Companions</button>
+      <button class="filter-btn list-toggle" id="listToggle" onclick="toggleListView(this)">☰ LIST</button>
     </div>
+
+    <!-- LIST VIEW CONTROLS (hidden by default) -->
+    <div class="roster-controls list-controls" id="listControls" style="display:none">
+      <input class="search-box" type="text" id="searchBoxList" placeholder="Search by name or set…" oninput="renderList()">
+      <button class="filter-btn" onclick="resetListFilters()" title="Clear filters">✕</button>
+      <select class="list-filter-select" id="listFilterVersion" onchange="renderList()">
+        <option value="">All Waves</option>
+      </select>
+      <select class="list-filter-select" id="listFilterGame" onchange="renderList()">
+        <option value="">All Expansions</option>
+      </select>
+      <select class="list-filter-select" id="listFilterType" onchange="renderList()">
+        <option value="">All Types</option>
+        <option value="hero">Hero</option>
+        <option value="villain">Villain</option>
+        <option value="antihero">Anti-Hero</option>
+        <option value="companion">Companion</option>
+      </select>
+      <select class="list-filter-select" id="listFilterStatus" onchange="renderList()">
+        <option value="">Status — Any</option>
+        <option value="played">Played</option>
+        <option value="unplayed">Unplayed</option>
+        <option value="defeated">Defeated</option>
+        <option value="notdefeated">Not Yet Defeated</option>
+      </select>
+      <button class="filter-btn list-toggle active" onclick="toggleListView(document.getElementById('listToggle'))">☰ LIST</button>
+    </div>
+
     <div id="rosterContent"></div>
+    <div id="listContent" style="display:none"></div>
   </div>
 
   <!-- ASSEMBLE -->
@@ -768,7 +903,7 @@
 
         <!-- ASSEMBLE TEAM button — logo image -->
         <button class="home-btn" onclick="goToView('assemble')">
-          <img class="home-btn-svg" src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1Ctvs5h8c1P-8Vu2c577ZjYBqKg65kue0" alt="Assemble Team">
+          <img class="home-btn-svg" src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1Ctvs5h8c1P-8Vu2c577ZjYBqKg65kue0&n=-1" alt="Assemble Team">
         </button>
 
       </div>
@@ -778,12 +913,12 @@
   <!-- SETTINGS -->
   <div class="view view-settings" id="view-settings">
     <div class="settings-panel">
+      <button class="btn-sync" onclick="goHome()" style="margin-bottom:20px;background:var(--ink);">🏠 HOME</button>
       <div class="settings-title">⚙️ SETTINGS</div>
       <label class="settings-label">🔑 GOOGLE SHEETS API KEY</label>
       <input class="api-input" type="password" id="apiKeyInput" placeholder="Paste your API key here…">
       <button class="btn-sync" onclick="syncSheet()">⚡ SYNC ROSTER</button>
       <span class="sync-status" id="syncStatus">Not synced</span>
-      <button class="btn-sync" onclick="goHome()" style="margin-top:16px;background:var(--ink);">🏠 HOME</button>
     </div>
   </div>
 
@@ -814,7 +949,7 @@
 <!-- SIDE PEEK BUTTONS -->
 <!-- Right edge: Assemble logo, navigates to Assemble -->
 <button class="side-arrow right" id="arrowRight" onclick="goToView('assemble')" title="Assemble Team">
-  <img src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1Ctvs5h8c1P-8Vu2c577ZjYBqKg65kue0" alt="Assemble Team">
+  <img src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1Ctvs5h8c1P-8Vu2c577ZjYBqKg65kue0&n=-1" alt="Assemble Team">
 </button>
 
 <!-- Left edge: Roster logo, navigates to Roster -->
@@ -864,29 +999,37 @@ function getData(c) {
   };
 }
 
-// TYPE NORMALISATION — reads column H: Hero | Villain | Anti-Hero | Pet
-function normaliseType(raw) {
-  const t = raw.trim().toLowerCase();
-  if (t === 'villain')   return 'villain';
-  if (t === 'anti-hero') return 'antihero';
-  if (t === 'pet')       return 'pet';
-  return 'hero'; // default / "Hero"
+// Helpers: does this character have a type in their types array?
+function hasType(c, t) { return c.types && c.types.includes(t); }
+function isPlayable(c)  { return c.played !== null; }   // D column has TRUE/FALSE
+function isDefeatable(c){ return c.defeated !== null; } // E column has TRUE/FALSE
+
+// TYPE NORMALISATION — column H, comma-separated, e.g. "Hero,Villain"
+function normaliseTypes(raw) {
+  if (!raw || !raw.trim()) return ['hero'];
+  return raw.split(',').map(t => {
+    const s = t.trim().toLowerCase();
+    if (s === 'villain')   return 'villain';
+    if (s === 'anti-hero' || s === 'antihero') return 'antihero';
+    if (s === 'companion' || s === 'pet')      return 'companion';
+    return 'hero';
+  }).filter((v,i,a) => a.indexOf(v)===i); // dedupe
 }
+
+// Primary type for display (first in list)
+function primaryType(types) { return types[0] || 'hero'; }
 
 // WAVE HELPERS
-function waveName(v) {
-  const n = parseInt(v);
-  if (n===1) return 'Wave 1 — Classic Marvel';
-  if (n===2) return 'Wave 2 — X-Men';
-  if (n===3) return 'Wave 3 — Multiverse';
-  return v || 'Other';
-}
+// Wave label uses column A value directly
+function waveName(v) { return v || 'Other'; }
 
+// Assign a CSS class for colour based on first digit found, or fallback
 function waveCls(v) {
-  const n = parseInt(v);
-  if (n===1) return 'w1';
-  if (n===2) return 'w2';
-  if (n===3) return 'w3';
+  const digit = (v||'').match(/\d/);
+  if (!digit) return 'wo';
+  if (digit[0]==='1') return 'w1';
+  if (digit[0]==='2') return 'w2';
+  if (digit[0]==='3') return 'w3';
   return 'wo';
 }
 
@@ -902,17 +1045,23 @@ async function syncSheet() {
     const data = await res.json();
     allChars = (data.values||[])
       .filter(r => r[2])
-      .map(r => ({
-        version: (r[0]||'').trim(),
-        game:    (r[1]||'').trim(),
-        name:    (r[2]||'').trim(),
-        played:  (r[3]||'').trim().toUpperCase()==='TRUE',
-        defeated:(r[4]||'').trim().toUpperCase()==='TRUE',
-        notes:   (r[5]||'').trim(),
-        artUrl:  (r[6]||'').trim(),
-        type:    normaliseType(r[7]||''),
-      }));
+      .map(r => {
+        const playedRaw   = (r[3]||'').trim().toUpperCase();
+        const defeatedRaw = (r[4]||'').trim().toUpperCase();
+        return {
+          version:    (r[0]||'').trim(),
+          game:       (r[1]||'').trim(),
+          name:       (r[2]||'').trim(),
+          // TRUE=done, FALSE=not yet, blank=not applicable
+          played:     playedRaw === 'TRUE' ? true : playedRaw === 'FALSE' ? false : null,
+          defeated:   defeatedRaw === 'TRUE' ? true : defeatedRaw === 'FALSE' ? false : null,
+          notes:      (r[5]||'').trim(),
+          artUrl:     (r[6]||'').trim(),
+          types:      normaliseTypes(r[7]||''),
+        };
+      });
     localStorage.setItem('mu_apiKey', key);
+    localStorage.setItem('mu_chars', JSON.stringify(allChars));
     updateStats();
     renderRoster();
     setStatus(`✓ ${allChars.length} characters loaded`, 'ok');
@@ -933,11 +1082,163 @@ function updateStats() {
 }
 
 // ROSTER
+let isListView = false;
+
 function setFilter(f, btn) {
   currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn:not(.list-toggle)').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderRoster();
+}
+
+function resetGridFilters() {
+  document.getElementById('searchBox').value = '';
+  // Click the All button to reset filter state
+  const allBtn = document.querySelector('.filter-btn.all-btn');
+  if (allBtn) setFilter('all', allBtn);
+  else renderRoster();
+}
+
+function resetListFilters() {
+  document.getElementById('searchBoxList').value = '';
+  document.getElementById('listFilterVersion').value = '';
+  document.getElementById('listFilterGame').value = '';
+  document.getElementById('listFilterType').value = '';
+  document.getElementById('listFilterStatus').value = '';
+  renderList();
+}
+
+function toggleListView(btn) {
+  isListView = !isListView;
+  const gridControls = document.getElementById('gridControls');
+  const listControls = document.getElementById('listControls');
+  const rosterContent = document.getElementById('rosterContent');
+  const listContent   = document.getElementById('listContent');
+  const listToggle    = document.getElementById('listToggle');
+
+  if (isListView) {
+    gridControls.style.display  = 'none';
+    listControls.style.display  = 'flex';
+    rosterContent.style.display = 'none';
+    listContent.style.display   = 'block';
+    listToggle.classList.add('active');
+    populateListDropdowns();
+    renderList();
+  } else {
+    gridControls.style.display  = 'flex';
+    listControls.style.display  = 'none';
+    rosterContent.style.display = 'block';
+    listContent.style.display   = 'none';
+    listToggle.classList.remove('active');
+    renderRoster();
+  }
+}
+
+function populateListDropdowns() {
+  // Version dropdown
+  const versions = [...new Set(allChars.map(c => c.version).filter(Boolean))].sort();
+  const vSel = document.getElementById('listFilterVersion');
+  const curV = vSel.value;
+  vSel.innerHTML = '<option value="">All Waves</option>' +
+    versions.map(v => `<option value="${v}"${v===curV?' selected':''}>${v}</option>`).join('');
+
+  // Game dropdown — build unique game+version pairs, prefix with "Wave N - ", sort by wave then game
+  const gameMap = {};
+  allChars.forEach(c => {
+    if (!c.game) return;
+    if (!gameMap[c.game]) {
+      // Extract leading digit from version for wave number
+      const numMatch = (c.version||'').match(/[\d.]+/);
+      gameMap[c.game] = numMatch ? parseFloat(numMatch[0]) : 999;
+    }
+  });
+  const sortedGames = Object.keys(gameMap).sort((a, b) => {
+    if (gameMap[a] !== gameMap[b]) return gameMap[a] - gameMap[b];
+    return a.localeCompare(b);
+  });
+  const gSel = document.getElementById('listFilterGame');
+  const curG = gSel.value;
+  gSel.innerHTML = '<option value="">All Expansions</option>' +
+    sortedGames.map(g => {
+      const wave = gameMap[g] < 999 ? `Wave ${gameMap[g]} — ` : '';
+      return `<option value="${g}"${g===curG?' selected':''}>${wave}${g}</option>`;
+    }).join('');
+}
+
+function renderList() {
+  const q        = (document.getElementById('searchBoxList').value||'').toLowerCase();
+  const version  = document.getElementById('listFilterVersion').value;
+  const game     = document.getElementById('listFilterGame').value;
+  const type     = document.getElementById('listFilterType').value;
+  const status   = document.getElementById('listFilterStatus').value;
+  const box      = document.getElementById('listContent');
+
+  if (!allChars.length) {
+    box.innerHTML = `<div class="empty-state"><div class="empty-icon">🦸</div><div class="empty-title">No Roster Loaded</div><div class="empty-body">Sync your roster first.</div></div>`;
+    return;
+  }
+
+  let chars = [...allChars].sort((a,b) => a.name.localeCompare(b.name));
+
+  chars = chars.filter(c => {
+    if (q && !c.name.toLowerCase().includes(q) && !c.game.toLowerCase().includes(q)) return false;
+    if (version && c.version !== version) return false;
+    if (game    && c.game    !== game)    return false;
+    if (type    && !hasType(c, type))     return false;
+
+    if (status) {
+      const d = getData(c);
+      if (status === 'played'      && d.played !== true)    return false;
+      if (status === 'unplayed'    && d.played !== false)   return false;
+      if (status === 'defeated'    && d.defeated !== true)  return false;
+      if (status === 'notdefeated' && d.defeated !== false) return false;
+    }
+    return true;
+  });
+
+  if (!chars.length) {
+    box.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No Results</div><div class="empty-body">Try adjusting the filters.</div></div>`;
+    return;
+  }
+
+  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion' };
+
+  function statusBadge(val, doneLabel, pendingLabel) {
+    if (val === true)  return `<span class="list-status done">${doneLabel}</span>`;
+    if (val === false) return `<span class="list-status pending">${pendingLabel}</span>`;
+    return `<span class="list-status na">N/A</span>`;
+  }
+
+  const rows = chars.map(c => {
+    const d = getData(c);
+    const types = (c.types||['hero']).map(t => typeLabels[t]||t).join(', ');
+    const thumb = c.artUrl
+      ? `<img class="list-thumb" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none'">`
+      : `<div class="list-thumb-placeholder">${c.name[0]}</div>`;
+    const key = cKey(c).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<tr onclick="openModal('${key}')">
+      <td>${thumb}</td>
+      <td><strong>${c.name}</strong></td>
+      <td>${c.version||'—'}</td>
+      <td>${c.game||'—'}</td>
+      <td>${types}</td>
+      <td>${statusBadge(d.played, 'Played', 'Unplayed')}</td>
+      <td>${statusBadge(d.defeated, 'Defeated', 'Not Yet')}</td>
+    </tr>`;
+  }).join('');
+
+  box.innerHTML = `<table class="list-table">
+    <thead><tr>
+      <th></th>
+      <th>NAME</th>
+      <th>VERSION</th>
+      <th>GAME</th>
+      <th>TYPE</th>
+      <th>PLAYED</th>
+      <th>DEFEATED</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 
 function renderRoster() {
@@ -950,18 +1251,14 @@ function renderRoster() {
   }
 
   let chars = allChars.filter(c => {
+    // Search
     if (q && !c.name.toLowerCase().includes(q) && !c.game.toLowerCase().includes(q)) return false;
-    if (currentFilter==='hero'     && c.type!=='hero')     return false;
-    if (currentFilter==='villain'  && c.type!=='villain')  return false;
-    if (currentFilter==='antihero' && c.type!=='antihero') return false;
-    if (currentFilter==='pet'      && c.type!=='pet')      return false;
-    if (currentFilter==='unplayed') {
-      if (c.type==='pet') return false; // pets excluded from unplayed
-      const d = getData(c);
-      if (c.type==='antihero') return !d.played || !d.defeated;
-      if (c.type==='hero')     return !d.played;
-      if (c.type==='villain')  return !d.defeated;
-    }
+    // Type filter — character must have the type in their types array
+    if (currentFilter==='hero'      && !hasType(c,'hero'))      return false;
+    if (currentFilter==='villain'   && !hasType(c,'villain'))   return false;
+    if (currentFilter==='antihero'  && !hasType(c,'antihero'))  return false;
+    if (currentFilter==='companion' && !hasType(c,'companion')) return false;
+
     return true;
   });
 
@@ -970,18 +1267,27 @@ function renderRoster() {
     return;
   }
 
-  const grouped = !q && currentFilter !== 'unplayed' && currentFilter !== 'pet';
+  const grouped = !q && currentFilter === 'all';
 
   if (grouped) {
     const waves = {};
     chars.forEach(c => {
-      const w = c.version || '0';
+      const w = (c.version || '').trim() || 'Other';
       if (!waves[w]) waves[w] = [];
       waves[w].push(c);
     });
+    // Sort keys: numbered ones first (by first digit), then alpha
+    const waveKeys = Object.keys(waves).sort((a,b) => {
+      const da = parseInt(a) || 999, db = parseInt(b) || 999;
+      if (da !== db) return da - db;
+      return a.localeCompare(b);
+    });
+    if (!waveKeys.length) {
+      box.innerHTML = `<div class="roster-grid">${chars.map((c,i)=>cardHTML(c,i)).join('')}</div>`;
+      return;
+    }
     let html = '';
-    ['1','2','3','0'].forEach(w => {
-      if (!waves[w]) return;
+    waveKeys.forEach(w => {
       html += `<div class="wave-header">
         <div class="wave-banner ${waveCls(w)}">${waveName(w)}</div>
         <div class="wave-rule"></div>
@@ -996,19 +1302,27 @@ function renderRoster() {
 }
 
 function cardHTML(c, i) {
-  const d      = getData(c);
-  const key    = cKey(c).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  const isDone = (c.type==='hero'&&d.played)||(c.type==='villain'&&d.defeated)||(c.type==='antihero'&&d.played&&d.defeated);
-  const typeCls = c.type==='villain' ? 'is-villain' : c.type==='antihero' ? 'is-antihero' : c.type==='pet' ? 'is-pet' : '';
-  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', pet:'Pet' };
-  const typeLabel = typeLabels[c.type] || 'Hero';
+  const d   = getData(c);
+  const key = cKey(c).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const types = c.types || ['hero'];
+  const prim  = primaryType(types);
+
+  // isDone: all applicable statuses complete
+  const herosDone    = !hasType(c,'hero')     || !isPlayable(c)   || d.played   === true;
+  const villainsDone = !hasType(c,'villain')  || !isDefeatable(c) || d.defeated === true;
+  const antiDone     = !hasType(c,'antihero') || ((!isPlayable(c)||d.played===true) && (!isDefeatable(c)||d.defeated===true));
+  const isDone = herosDone && villainsDone && antiDone;
+
+  const typeCls = prim==='villain' ? 'is-villain' : prim==='antihero' ? 'is-antihero' : prim==='companion' ? 'is-companion' : '';
+  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion' };
 
   const artHtml = c.artUrl
     ? `<img class="char-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="char-art-placeholder" style="display:none">${c.name[0]}</div>`
     : `<div class="char-art-placeholder">${c.name[0]}</div>`;
 
-  const ps = (d.played   && (c.type==='hero'   ||c.type==='antihero')) ? `<div class="played-stamp">PLAYED</div>`   : '';
-  const ds = (d.defeated && (c.type==='villain'||c.type==='antihero')) ? `<div class="defeated-stamp">DEFEATED</div>` : '';
+  const ps = (d.played===true   && (hasType(c,'hero')||hasType(c,'antihero')))    ? `<div class="played-stamp">PLAYED</div>`   : '';
+  const ds = (d.defeated===true && (hasType(c,'villain')||hasType(c,'antihero'))) ? `<div class="defeated-stamp">DEFEATED</div>` : '';
+  const tags = types.map(t => `<span class="ctag ctag-${t}">${typeLabels[t]||t}</span>`).join('');
 
   return `<div class="char-card ${typeCls} ${isDone?'is-done':''}"
       style="animation-delay:${Math.min(i*.025,.5)}s"
@@ -1017,7 +1331,7 @@ function cardHTML(c, i) {
     <div class="char-info">
       <div class="char-name">${c.name}</div>
       <div class="char-game">${c.game}</div>
-      <div class="char-tags"><span class="ctag ctag-${c.type}">${typeLabel}</span></div>
+      <div class="char-tags">${tags}</div>
     </div>
   </div>`;
 }
@@ -1033,9 +1347,10 @@ function openModal(key) {
   document.getElementById('modalSub').textContent   = `${waveName(c.version)} • ${c.game}`;
 
   const badge = document.getElementById('modalTypeBadge');
-  const typeLabels2 = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', pet:'Pet' };
-  badge.textContent = typeLabels2[c.type] || c.type;
-  badge.className   = `modal-type-badge ${c.type}`;
+  const typeLabels2 = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion' };
+  const types2 = c.types || ['hero'];
+  badge.textContent = types2.map(t => typeLabels2[t]||t).join(' + ');
+  badge.className   = `modal-type-badge ${primaryType(types2)}`;
 
   const art = document.getElementById('modalArt');
   if (c.artUrl) { art.src=proxyImg(c.artUrl); art.style.display='block'; } else { art.style.display='none'; }
@@ -1099,13 +1414,13 @@ async function assembleTeam() {
   const btn = document.getElementById('assembleBtn');
   btn.disabled = true;
 
-  // Pets are excluded from random draw; Anti-Heroes can appear in either pool
-  let heroPool = allChars.filter(c => c.type==='hero'||c.type==='antihero');
-  let vilPool  = allChars.filter(c => c.type==='villain'||c.type==='antihero');
+  // Companions excluded from random draw; Anti-Heroes can appear in either pool
+  let heroPool = allChars.filter(c => (hasType(c,'hero')||hasType(c,'antihero')) && isPlayable(c));
+  let vilPool  = allChars.filter(c => (hasType(c,'villain')||hasType(c,'antihero')) && isDefeatable(c));
 
   if (assembleMode==='unplayed') {
-    heroPool = heroPool.filter(c => !getData(c).played);
-    vilPool  = vilPool.filter(c  => !getData(c).defeated);
+    heroPool = heroPool.filter(c => getData(c).played === false);
+    vilPool  = vilPool.filter(c  => getData(c).defeated === false);
   }
 
   if (heroPool.length < 4) { alert(`Need 4 heroes — only ${heroPool.length} available!`); btn.disabled=false; return; }
@@ -1194,6 +1509,8 @@ function goToView(view) {
   if (viewEl) viewEl.classList.add('active');
   document.getElementById('fabSettings').classList.remove('active-settings');
   updateArrows(view);
+  // Re-render roster when navigating to it so data is always fresh
+  if (view === 'roster') renderRoster();
 }
 
 function goHome() {
@@ -1223,8 +1540,22 @@ function switchView(view) {
 
 // INIT
 window.addEventListener('load', () => {
-  const saved = localStorage.getItem('mu_apiKey');
-  if (saved) document.getElementById('apiKeyInput').value = saved;
+  const savedKey   = localStorage.getItem('mu_apiKey');
+  const savedChars = localStorage.getItem('mu_chars');
+
+  if (savedKey)   document.getElementById('apiKeyInput').value = savedKey;
+
+  if (savedChars) {
+    try {
+      allChars = JSON.parse(savedChars);
+      updateStats();
+      renderRoster();
+      setStatus(`✓ ${allChars.length} characters (cached)`, 'ok');
+    } catch(e) {
+      localStorage.removeItem('mu_chars');
+    }
+  }
+
   document.getElementById('charModal').addEventListener('click', e => {
     if (e.target === document.getElementById('charModal')) closeModal();
   });
