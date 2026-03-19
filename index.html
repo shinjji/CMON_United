@@ -519,6 +519,26 @@
 
   .slot-lightbox-caption.villain .slot-lightbox-game { color: rgba(255,255,255,0.5); }
 
+  /* ASSEMBLE STATUS */
+  .assemble-status {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 50;
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--ink);
+    background: var(--yellow);
+    border: 3px solid var(--border-ink);
+    box-shadow: 3px 3px 0 var(--border-ink);
+    padding: 6px 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .assemble-status.visible { opacity: 1; }
+
   /* FLASH */
   .flash-overlay { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0; }
   .flash-overlay.go         { animation: flashGo 0.35s ease-out forwards; background: var(--white); }
@@ -911,6 +931,7 @@
 <body>
 
 <div class="flash-overlay" id="flashOverlay"></div>
+<div class="assemble-status" id="assembleStatus"></div>
 
 
 
@@ -1736,13 +1757,14 @@ async function assembleTeam() {
   const msgs = ['ASSEMBLING…','CALLING THE HEROES…','UNITED WE STAND…','TEAM COMPLETE!'];
 
   for (let i=0;i<4;i++) {
-  
+    statusEl.textContent = msgs[i];
+    statusEl.classList.add('visible');
     await delay(i===0 ? 300 : 100);
     revealSlot(i, heroes[i]);
     await delay(600);
   }
 
-
+  statusEl.classList.remove('visible');
   await delay(200);
 
   document.getElementById('villainSection').style.display = 'block';
