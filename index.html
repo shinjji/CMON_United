@@ -202,6 +202,7 @@
   .char-card:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--border-ink); }
 
   .char-card::before { content:''; display:block; height:5px; background: var(--blue); }
+  .char-card.is-herov2::before   { background: #999; }
   .char-card.is-villain::before    { background: var(--red); }
   .char-card.is-antihero::before   { background: var(--purple); }
   .char-card.is-companion::before  { background: #E07000; }
@@ -223,19 +224,19 @@
   }
 
   .played-stamp {
-    position: absolute; top: 6px; right: 6px;
+    position: absolute; bottom: 6px; right: 6px;
     background: var(--green); color: var(--white);
-    font-family: 'Bangers', cursive; font-size: 10px; letter-spacing: 1px;
-    padding: 2px 6px; border: 2px solid var(--border-ink);
-    box-shadow: 2px 2px 0 var(--border-ink); transform: rotate(3deg);
+    font-family: 'Bangers', cursive; font-size: 20px; letter-spacing: 1px;
+    padding: 4px 12px; border: 2px solid var(--border-ink);
+    box-shadow: 3px 3px 0 var(--border-ink); transform: rotate(3deg);
   }
 
   .defeated-stamp {
-    position: absolute; top: 6px; left: 6px;
-    background: var(--red); color: var(--white);
-    font-family: 'Bangers', cursive; font-size: 10px; letter-spacing: 1px;
-    padding: 2px 6px; border: 2px solid var(--border-ink);
-    box-shadow: 2px 2px 0 var(--border-ink); transform: rotate(-3deg);
+    position: absolute; bottom: 6px; left: 6px;
+    background: var(--yellow); color: var(--ink);
+    font-family: 'Bangers', cursive; font-size: 20px; letter-spacing: 1px;
+    padding: 4px 12px; border: 2px solid var(--border-ink);
+    box-shadow: 3px 3px 0 var(--border-ink); transform: rotate(-3deg);
   }
 
   .char-info {
@@ -255,6 +256,7 @@
   }
 
   .ctag-hero      { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+  .ctag-herov2    { background: #EBEBEB; color: #555; border-color: #999; }
   .ctag-villain   { background: #FFE6E6; color: var(--red); border-color: var(--red); }
   .ctag-antihero  { background: #F3E6FF; color: var(--purple); border-color: var(--purple); }
   .ctag-companion { background: #FFF0D6; color: #E07000; border-color: #E07000; }
@@ -493,32 +495,72 @@
   .modal {
     background: var(--paper);
     border: 4px solid var(--border-ink); box-shadow: 8px 8px 0 var(--border-ink);
-    max-width: 380px; width: 100%; position: relative;
-    max-height: 90vh; overflow-y: auto;
+    max-width: 780px; width: 100%; position: relative;
   }
 
   .modal-header {
     background: var(--red); border-bottom: 4px solid var(--border-ink);
     padding: 10px 16px;
     display:flex; align-items:center; justify-content:space-between;
+    transition: background 0.2s;
   }
+
+  /* header background set via JS inline style for single colour or gradient */
 
   .modal-title { font-family:'Bangers',cursive; font-size:22px; letter-spacing:2px; color:var(--white); }
   .modal-close { font-family:'Bangers',cursive; font-size:22px; color:var(--white); background:none; border:none; cursor:pointer; line-height:1; padding:0 4px; }
 
-  .modal-art { width:100%; max-height:220px; object-fit:cover; object-position:top; display:block; border-bottom:3px solid var(--border-ink); }
-  .modal-body { padding:16px; }
-  .modal-sub  { font-size:10px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+  /* Side-by-side layout: image left, details right */
+  .modal-inner {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .modal-art-wrap {
+    flex: 0 0 440px;
+    width: 440px;
+    border-right: 3px solid var(--border-ink);
+    overflow: hidden;
+    background: var(--panel-tan);
+  }
+
+  .modal-art {
+    width: 440px;
+    height: 440px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+  }
+
+
+
+  .modal-body { padding:16px; flex: 1; }
+  .modal-sub  { font-size:10px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--red); margin-bottom:10px; }
+  .modal-stamps { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .modal-stamps .played-stamp,
+  .modal-stamps .defeated-stamp {
+    position:static; transform:none;
+    font-size: 20px; padding: 4px 12px;
+    box-shadow: 3px 3px 0 var(--border-ink);
+  }
+
+  .modal-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
 
   .modal-type-badge {
     display:inline-block; font-family:'Bangers',cursive; font-size:14px; letter-spacing:1px;
-    padding:2px 10px; border:2px solid var(--border-ink); margin-bottom:14px;
+    padding:2px 10px; border:2px solid var(--border-ink);
   }
 
-  .modal-type-badge.hero      { background:var(--blue); color:var(--white); }
-  .modal-type-badge.villain   { background:var(--red); color:var(--white); }
-  .modal-type-badge.antihero  { background:var(--purple); color:var(--white); }
-  .modal-type-badge.companion { background:#E07000; color:var(--white); }
+  .modal-type-badge.hero      { background:var(--blue);    color:var(--white); }
+  .modal-type-badge.herov2    { background:#777;           color:var(--white); }
+  .modal-type-badge.villain   { background:var(--red);     color:var(--white); }
+  .modal-type-badge.antihero  { background:var(--purple);  color:var(--white); }
+  .modal-type-badge.companion { background:#E07000;        color:var(--white); }
 
   .modal-checks { display:flex; gap:16px; margin-bottom:14px; }
 
@@ -534,6 +576,7 @@
   }
 
   .modal-notes:focus { border-color:var(--blue); }
+  .modal-notes:disabled { background:#f0f0f0; color:#aaa; cursor:not-allowed; resize:none; }
 
   .btn-modal-save {
     width:100%; margin-top:12px;
@@ -546,6 +589,17 @@
 
   .btn-modal-save:hover  { background:var(--red-bright); }
   .btn-modal-save:active { transform:translate(3px,3px); box-shadow:1px 1px 0 var(--border-ink); }
+  .btn-modal-save.disabled {
+    background: #ccc; color: #999; cursor: not-allowed;
+    box-shadow: 2px 2px 0 #bbb; pointer-events: none;
+  }
+  .check-label.disabled { opacity: 0.4; pointer-events: none; cursor: not-allowed; }
+  .modal-completed-note {
+    margin-top: 10px;
+    font-size: 11px; font-weight: 800; font-style: italic;
+    color: var(--green); letter-spacing: 0.5px; line-height: 1.5;
+    text-align: center;
+  }
 
   /* SCROLLBAR */
   ::-webkit-scrollbar { width:8px; }
@@ -754,7 +808,7 @@
 
   .list-table tr:nth-child(even) td { background: var(--panel-cream); }
 
-  .list-table tr:hover td { background: #EBF2FF; cursor: pointer; }
+  .list-table tr { cursor: pointer; }
 
   .list-thumb {
     width: 36px;
@@ -917,6 +971,8 @@
       <div class="settings-title">⚙️ SETTINGS</div>
       <label class="settings-label">🔑 GOOGLE SHEETS API KEY</label>
       <input class="api-input" type="password" id="apiKeyInput" placeholder="Paste your API key here…">
+      <label class="settings-label" style="margin-top:14px;">🔐 SERVICE ACCOUNT JSON <span style="font-family:Nunito,sans-serif;font-size:10px;font-weight:700;color:#999;letter-spacing:0">(required for saving changes back to sheet)</span></label>
+      <textarea class="api-input" id="serviceKeyInput" placeholder="Paste your service account JSON here…" style="min-height:80px;resize:vertical;font-size:11px;"></textarea>
       <button class="btn-sync" onclick="syncSheet()">⚡ SYNC ROSTER</button>
       <span class="sync-status" id="syncStatus">Not synced</span>
     </div>
@@ -932,16 +988,23 @@
       <div class="modal-title" id="modalTitle">CHARACTER</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <img class="modal-art" id="modalArt" src="" alt="" style="display:none">
-    <div class="modal-body">
-      <div class="modal-sub"       id="modalSub"></div>
-      <div class="modal-type-badge" id="modalTypeBadge"></div>
-      <div class="modal-checks">
-        <label class="check-label"><input type="checkbox" id="modalPlayed">   Played</label>
-        <label class="check-label"><input type="checkbox" id="modalDefeated"> Defeated</label>
+    <div class="modal-inner">
+      <div class="modal-art-wrap" id="modalArtWrap">
       </div>
-      <textarea class="modal-notes" id="modalNotes" placeholder="Notes…"></textarea>
-      <button class="btn-modal-save" onclick="saveModal()">SAVE CHANGES</button>
+      <div class="modal-body">
+        <div class="modal-stamps" id="modalStamps"></div>
+        <div class="modal-sub" id="modalSub"></div>
+        <div class="modal-badges" id="modalBadges"></div>
+        <div class="modal-checks" id="modalChecks">
+          <label class="check-label" id="labelPlayed"><input type="checkbox" id="modalPlayed"> Played</label>
+          <label class="check-label" id="labelDefeated"><input type="checkbox" id="modalDefeated"> Defeated</label>
+        </div>
+        <textarea class="modal-notes" id="modalNotes" placeholder="Notes…"></textarea>
+        <button class="btn-modal-save" id="btnModalSave" onclick="saveModal()">SAVE CHANGES</button>
+        <div class="modal-completed-note" id="modalCompletedNote" style="display:none">
+          ✓ This character has been completed. To undo this, please amend the sheet directly.
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1009,9 +1072,10 @@ function normaliseTypes(raw) {
   if (!raw || !raw.trim()) return ['hero'];
   return raw.split(',').map(t => {
     const s = t.trim().toLowerCase();
-    if (s === 'villain')   return 'villain';
+    if (s === 'villain')             return 'villain';
     if (s === 'anti-hero' || s === 'antihero') return 'antihero';
     if (s === 'companion' || s === 'pet')      return 'companion';
+    if (s === 'herov2')              return 'herov2';
     return 'hero';
   }).filter((v,i,a) => a.indexOf(v)===i); // dedupe
 }
@@ -1044,23 +1108,26 @@ async function syncSheet() {
     if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||res.statusText); }
     const data = await res.json();
     allChars = (data.values||[])
-      .filter(r => r[2])
-      .map(r => {
+      .map((r, i) => {
+        if (!r[2]) return null;
         const playedRaw   = (r[3]||'').trim().toUpperCase();
         const defeatedRaw = (r[4]||'').trim().toUpperCase();
         return {
           version:    (r[0]||'').trim(),
           game:       (r[1]||'').trim(),
           name:       (r[2]||'').trim(),
-          // TRUE=done, FALSE=not yet, blank=not applicable
           played:     playedRaw === 'TRUE' ? true : playedRaw === 'FALSE' ? false : null,
           defeated:   defeatedRaw === 'TRUE' ? true : defeatedRaw === 'FALSE' ? false : null,
           notes:      (r[5]||'').trim(),
           artUrl:     (r[6]||'').trim(),
           types:      normaliseTypes(r[7]||''),
+          rowIndex:   i + 2, // 1-indexed, +1 for header row
         };
-      });
+      })
+      .filter(Boolean);
     localStorage.setItem('mu_apiKey', key);
+    const svcKey = document.getElementById('serviceKeyInput').value.trim();
+    if (svcKey) localStorage.setItem('mu_serviceKey', svcKey);
     localStorage.setItem('mu_chars', JSON.stringify(allChars));
     updateStats();
     renderRoster();
@@ -1201,7 +1268,7 @@ function renderList() {
     return;
   }
 
-  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion' };
+  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion', herov2:'Hero' };
 
   function statusBadge(val, doneLabel, pendingLabel) {
     if (val === true)  return `<span class="list-status done">${doneLabel}</span>`;
@@ -1216,7 +1283,11 @@ function renderList() {
       ? `<img class="list-thumb" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none'">`
       : `<div class="list-thumb-placeholder">${c.name[0]}</div>`;
     const key = cKey(c).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    return `<tr onclick="openModal('${key}')">
+    const hoverColours = { hero:'#EBF2FF', herov2:'#EBEBEB', villain:'#FFE6E6', antihero:'#F0E6FF', companion:'#FFE0B2' };
+    const hoverCol = hoverColours[primaryType(c.types||['hero'])] || '#EBF2FF';
+    return `<tr onclick="openModal('${key}')"
+      onmouseover="Array.from(this.cells).forEach(td=>td.style.background='${hoverCol}')"
+      onmouseout="Array.from(this.cells).forEach(td=>td.style.background='')">
       <td>${thumb}</td>
       <td><strong>${c.name}</strong></td>
       <td>${c.version||'—'}</td>
@@ -1254,7 +1325,7 @@ function renderRoster() {
     // Search
     if (q && !c.name.toLowerCase().includes(q) && !c.game.toLowerCase().includes(q)) return false;
     // Type filter — character must have the type in their types array
-    if (currentFilter==='hero'      && !hasType(c,'hero'))      return false;
+    if (currentFilter==='hero'      && !hasType(c,'hero') && !hasType(c,'herov2')) return false;
     if (currentFilter==='villain'   && !hasType(c,'villain'))   return false;
     if (currentFilter==='antihero'  && !hasType(c,'antihero'))  return false;
     if (currentFilter==='companion' && !hasType(c,'companion')) return false;
@@ -1308,19 +1379,19 @@ function cardHTML(c, i) {
   const prim  = primaryType(types);
 
   // isDone: all applicable statuses complete
-  const herosDone    = !hasType(c,'hero')     || !isPlayable(c)   || d.played   === true;
+  const herosDone    = (!hasType(c,'hero')&&!hasType(c,'herov2')) || !isPlayable(c)   || d.played   === true;
   const villainsDone = !hasType(c,'villain')  || !isDefeatable(c) || d.defeated === true;
   const antiDone     = !hasType(c,'antihero') || ((!isPlayable(c)||d.played===true) && (!isDefeatable(c)||d.defeated===true));
   const isDone = herosDone && villainsDone && antiDone;
 
-  const typeCls = prim==='villain' ? 'is-villain' : prim==='antihero' ? 'is-antihero' : prim==='companion' ? 'is-companion' : '';
-  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion' };
+  const typeCls = prim==='villain' ? 'is-villain' : prim==='antihero' ? 'is-antihero' : prim==='companion' ? 'is-companion' : prim==='herov2' ? 'is-herov2' : '';
+  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion', herov2:'Hero' };
 
   const artHtml = c.artUrl
     ? `<img class="char-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="char-art-placeholder" style="display:none">${c.name[0]}</div>`
     : `<div class="char-art-placeholder">${c.name[0]}</div>`;
 
-  const ps = (d.played===true   && (hasType(c,'hero')||hasType(c,'antihero')))    ? `<div class="played-stamp">PLAYED</div>`   : '';
+  const ps = (d.played===true   && (hasType(c,'hero')||hasType(c,'herov2')||hasType(c,'antihero')))    ? `<div class="played-stamp">PLAYED</div>`   : '';
   const ds = (d.defeated===true && (hasType(c,'villain')||hasType(c,'antihero'))) ? `<div class="defeated-stamp">DEFEATED</div>` : '';
   const tags = types.map(t => `<span class="ctag ctag-${t}">${typeLabels[t]||t}</span>`).join('');
 
@@ -1346,18 +1417,82 @@ function openModal(key) {
   document.getElementById('modalTitle').textContent = c.name;
   document.getElementById('modalSub').textContent   = `${waveName(c.version)} • ${c.game}`;
 
-  const badge = document.getElementById('modalTypeBadge');
-  const typeLabels2 = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion' };
+  const typeLabels2   = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', companion:'Companion', herov2:'Hero' };
+  const typeColours2  = { hero:'var(--blue)', villain:'var(--red)', antihero:'var(--purple)', companion:'#E07000', herov2:'#777' };
   const types2 = c.types || ['hero'];
-  badge.textContent = types2.map(t => typeLabels2[t]||t).join(' + ');
-  badge.className   = `modal-type-badge ${primaryType(types2)}`;
+  const prim2  = primaryType(types2);
 
-  const art = document.getElementById('modalArt');
-  if (c.artUrl) { art.src=proxyImg(c.artUrl); art.style.display='block'; } else { art.style.display='none'; }
+  // Render one badge per type
+  const badgesEl = document.getElementById('modalBadges');
+  badgesEl.innerHTML = types2.map(t =>
+    `<span class="modal-type-badge ${t}">${typeLabels2[t]||t}</span>`
+  ).join('');
 
-  document.getElementById('modalPlayed').checked   = d.played;
-  document.getElementById('modalDefeated').checked = d.defeated;
-  document.getElementById('modalNotes').value       = d.notes;
+  // Header: solid colour for single type, gradient for multiple
+  const header = document.querySelector('.modal-header');
+  header.className = 'modal-header';
+  if (types2.length === 1) {
+    header.style.background = typeColours2[types2[0]] || 'var(--red)';
+  } else {
+    // Build smooth gradient: each colour anchored at its midpoint, blending into neighbours
+    const midpoints = types2.map((t, i) => {
+      const mid = Math.round((i + 0.5) / types2.length * 100);
+      return `${typeColours2[t]||'#888'} ${mid}%`;
+    });
+    header.style.background = `linear-gradient(90deg, ${midpoints.join(', ')})`;
+  }
+
+  // Image
+  const wrap = document.getElementById('modalArtWrap');
+  const existingImg = wrap.querySelector('img');
+  if (existingImg) existingImg.remove();
+  if (c.artUrl) {
+    const img = document.createElement('img');
+    img.className = 'modal-art';
+    img.src = proxyImg(c.artUrl);
+    img.alt = c.name;
+    wrap.appendChild(img);
+  }
+
+  // Stamps in modal body
+  const stampsEl = document.getElementById('modalStamps');
+  stampsEl.innerHTML = '';
+  if (d.played   === true && (hasType(c,'hero')||hasType(c,'herov2')||hasType(c,'antihero')))    stampsEl.innerHTML += `<div class="played-stamp">PLAYED</div>`;
+  if (d.defeated === true && (hasType(c,'villain')||hasType(c,'antihero'))) stampsEl.innerHTML += `<div class="defeated-stamp">DEFEATED</div>`;
+
+  // Show only relevant checkboxes based on whether played/defeated is applicable
+  const playedVisible   = c.played   !== null;
+  const defeatedVisible = c.defeated !== null;
+  document.getElementById('labelPlayed').style.display   = playedVisible   ? '' : 'none';
+  document.getElementById('labelDefeated').style.display = defeatedVisible ? '' : 'none';
+  document.getElementById('modalPlayed').checked   = d.played   === true;
+  document.getElementById('modalDefeated').checked = d.defeated === true;
+
+  // Check if all applicable statuses are TRUE — if so, grey out and lock
+  const playedDone   = !playedVisible   || d.played   === true;
+  const defeatedDone = !defeatedVisible || d.defeated === true;
+  const allDone = playedDone && defeatedDone;
+
+  const saveBtn = document.getElementById('btnModalSave');
+  const completedNote = document.getElementById('modalCompletedNote');
+  const labelPlayed   = document.getElementById('labelPlayed');
+  const labelDefeated = document.getElementById('labelDefeated');
+
+  const notesEl = document.getElementById('modalNotes');
+  if (allDone) {
+    saveBtn.classList.add('disabled');
+    completedNote.style.display = '';
+    labelPlayed.classList.add('disabled');
+    labelDefeated.classList.add('disabled');
+    notesEl.disabled = true;
+  } else {
+    saveBtn.classList.remove('disabled');
+    completedNote.style.display = 'none';
+    labelPlayed.classList.remove('disabled');
+    labelDefeated.classList.remove('disabled');
+    notesEl.disabled = false;
+  }
+  document.getElementById('modalNotes').value       = d.notes || '';
   document.getElementById('charModal').classList.add('open');
 }
 
@@ -1366,14 +1501,97 @@ function closeModal() {
   currentModalKey = null;
 }
 
-function saveModal() {
+async function saveModal() {
   if (!currentModalKey) return;
-  localOverrides[currentModalKey] = {
-    played:   document.getElementById('modalPlayed').checked,
-    defeated: document.getElementById('modalDefeated').checked,
-    notes:    document.getElementById('modalNotes').value,
-  };
+  if (!confirm('Save changes? This cannot be undone.')) return;
+
+  const c        = allChars.find(x => cKey(x) === currentModalKey);
+  const played   = document.getElementById('modalPlayed').checked;
+  const defeated = document.getElementById('modalDefeated').checked;
+  const notes    = document.getElementById('modalNotes').value;
+
+  // Save locally first
+  localOverrides[currentModalKey] = { played, defeated, notes };
   closeModal(); updateStats(); renderRoster();
+
+  // Write back to Google Sheet
+  try {
+    await updateCharInSheet(c, played, defeated, notes);
+    // Update cached chars too
+    if (c) {
+      c.played   = c.played   !== null ? played   : null;
+      c.defeated = c.defeated !== null ? defeated : null;
+      c.notes    = notes;
+      localStorage.setItem('mu_chars', JSON.stringify(allChars));
+    }
+  } catch(e) {
+    alert('⚠️ Saved locally but could not update the sheet:\n' + e.message + '\n\nCheck your service account JSON in Settings.');
+  }
+}
+
+// ── WRITE BACK TO GOOGLE SHEETS (Service Account JWT) ──────────────────────
+async function getAccessToken() {
+  const raw = localStorage.getItem('mu_serviceKey') || document.getElementById('serviceKeyInput').value.trim();
+  if (!raw) throw new Error('No service account JSON found. Add it in Settings.');
+  let key;
+  try { key = JSON.parse(raw); }
+  catch(e) { throw new Error('Invalid service account JSON'); }
+
+  const now = Math.floor(Date.now() / 1000);
+  const header = { alg: 'RS256', typ: 'JWT' };
+  const claim  = {
+    iss:   key.client_email,
+    scope: 'https://www.googleapis.com/auth/spreadsheets',
+    aud:   'https://oauth2.googleapis.com/token',
+    exp:   now + 3600,
+    iat:   now
+  };
+
+  const b64Header = btoa(JSON.stringify(header)).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+  const b64Claim  = btoa(JSON.stringify(claim)).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+  const sigInput  = b64Header + '.' + b64Claim;
+
+  const pemBody  = key.private_key.replace(/-----[^-]+-----/g,'').replace(/\s/g,'');
+  const derBuf   = Uint8Array.from(atob(pemBody), c => c.charCodeAt(0)).buffer;
+  const cryptoKey = await crypto.subtle.importKey(
+    'pkcs8', derBuf, { name:'RSASSA-PKCS1-v1_5', hash:'SHA-256' }, false, ['sign']
+  );
+  const enc    = new TextEncoder();
+  const sig    = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, enc.encode(sigInput));
+  const b64Sig = btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+  const jwt    = sigInput + '.' + b64Sig;
+
+  const resp = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`
+  });
+  const data = await resp.json();
+  if (!data.access_token) throw new Error(data.error_description || 'Could not get access token');
+  return data.access_token;
+}
+
+async function updateCharInSheet(c, played, defeated, notes) {
+  const token = await getAccessToken();
+  // We only update columns D (played), E (defeated), F (notes)
+  // Use batchUpdate to write just those three cells on the character's row
+  const rowNum = c.rowIndex;
+  if (!rowNum) throw new Error('Row index not found — please re-sync.');
+
+  const range = `${SHEET_TAB}!D${rowNum}:F${rowNum}`;
+  const playedVal   = c.played   === null ? '' : played   ? 'TRUE' : 'FALSE';
+  const defeatedVal = c.defeated === null ? '' : defeated ? 'TRUE' : 'FALSE';
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=USER_ENTERED`;
+  const resp = await fetch(url, {
+    method: 'PUT',
+    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ values: [[playedVal, defeatedVal, notes]] })
+  });
+  if (!resp.ok) {
+    const err = await resp.json();
+    throw new Error(err.error?.message || 'Write failed');
+  }
 }
 
 // ASSEMBLE
@@ -1415,7 +1633,7 @@ async function assembleTeam() {
   btn.disabled = true;
 
   // Companions excluded from random draw; Anti-Heroes can appear in either pool
-  let heroPool = allChars.filter(c => (hasType(c,'hero')||hasType(c,'antihero')) && isPlayable(c));
+  let heroPool = allChars.filter(c => (hasType(c,'hero')||hasType(c,'herov2')||hasType(c,'antihero')) && isPlayable(c));
   let vilPool  = allChars.filter(c => (hasType(c,'villain')||hasType(c,'antihero')) && isDefeatable(c));
 
   if (assembleMode==='unplayed') {
@@ -1540,10 +1758,12 @@ function switchView(view) {
 
 // INIT
 window.addEventListener('load', () => {
-  const savedKey   = localStorage.getItem('mu_apiKey');
-  const savedChars = localStorage.getItem('mu_chars');
+  const savedKey    = localStorage.getItem('mu_apiKey');
+  const savedSvcKey = localStorage.getItem('mu_serviceKey');
+  const savedChars  = localStorage.getItem('mu_chars');
 
-  if (savedKey)   document.getElementById('apiKeyInput').value = savedKey;
+  if (savedKey)    document.getElementById('apiKeyInput').value  = savedKey;
+  if (savedSvcKey) document.getElementById('serviceKeyInput').value = savedSvcKey;
 
   if (savedChars) {
     try {
