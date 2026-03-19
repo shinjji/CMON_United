@@ -310,26 +310,23 @@
 
   .mode-desc em { color: var(--red); font-style: normal; }
 
-  .assemble-status {
-    font-family: 'Bangers', cursive; font-size: 26px; letter-spacing: 5px;
-    text-align: center; color: var(--blue); height: 34px; margin-bottom: 16px;
-    opacity: 0; transition: opacity 0.3s;
-  }
-
-  .assemble-status.visible { opacity: 1; }
-
   /* HERO SLOTS */
-  .hero-slots { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+  .hero-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(193px, 1fr)); gap: 14px; margin-bottom: 24px; }
 
   @media (max-width: 560px) { .hero-slots { grid-template-columns: repeat(2,1fr); } }
 
   .hero-slot {
-    aspect-ratio: 1/1; border: 3px dashed rgba(26,16,8,0.2);
+    border: 3px dashed rgba(26,16,8,0.2);
     background: var(--panel-cream);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     position: relative; overflow: hidden; transition: all 0.3s;
     background-image: radial-gradient(circle, rgba(26,16,8,0.05) 1.5px, transparent 1.5px);
     background-size: 12px 12px;
+  }
+
+  .hero-slot .slot-img-wrap {
+    width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
 
   .hero-slot.revealed {
@@ -348,6 +345,7 @@
   .slot-label { font-family: 'Bangers', cursive; font-size: 13px; letter-spacing: 3px; color: rgba(26,16,8,0.18); }
 
   .slot-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .hero-slot .slot-art { position:absolute; inset:0; }
 
   .slot-art-placeholder {
     position:absolute; inset:0;
@@ -359,29 +357,15 @@
   }
 
   .slot-caption {
-    position:absolute; bottom:0; left:0; right:0;
+    width: 100%;
     background: var(--yellow); border-top: 3px solid var(--border-ink);
-    padding: 5px 8px 4px; text-align: center;
+    padding: 5px 8px 4px; text-align: center; flex-shrink: 0;
   }
 
   .slot-caption-name { font-family:'Bangers',cursive; font-size:14px; letter-spacing:0.5px; color:var(--ink); line-height:1.1; }
   .slot-caption-game { font-size:8px; font-weight:900; letter-spacing:1px; text-transform:uppercase; color:rgba(26,16,8,0.5); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
   /* ASSEMBLED BANNER */
-  .assembled-banner-wrap { text-align: center; margin-bottom: 24px; }
-
-  .assembled-banner {
-    display: inline-block;
-    font-family: 'Bangers', cursive; font-size: 34px; letter-spacing: 5px;
-    color: var(--white); background: var(--red);
-    border: 3px solid var(--border-ink); box-shadow: 5px 5px 0 var(--border-ink);
-    padding: 10px 24px;
-    opacity: 0; transform: scale(0.85) rotate(-1deg);
-    transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-  }
-
-  .assembled-banner.show { opacity:1; transform: scale(1) rotate(-1deg); }
-
   /* ASSEMBLE BTN */
   .assemble-btn-wrap { text-align: center; margin-bottom: 28px; }
 
@@ -404,19 +388,25 @@
 
   .villain-div-label {
     background: var(--ink); color: var(--red-bright);
-    font-family: 'Bangers', cursive; font-size: 13px; letter-spacing: 4px;
-    padding: 4px 14px;
-    border: 3px solid var(--border-ink); box-shadow: 3px 3px 0 var(--border-ink);
+    font-family: 'Bangers', cursive; font-size: 20px; letter-spacing: 4px;
+    padding: 6px 18px;
+    border: 3px solid var(--border-ink); box-shadow: 4px 4px 0 var(--border-ink);
   }
 
-  .villain-slot-wrap { display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .villain-slot-wrap { display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; }
+  .villain-grid { display:flex; justify-content:center; margin-bottom: 24px; width:100%; }
 
   .villain-slot {
-    width: 200px; aspect-ratio: 1/1;
-    border: 4px solid var(--border-ink);
-    position: relative; overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid var(--border-ink);
+    display: flex; flex-direction: column;
     background: var(--ink); box-shadow: 6px 6px 0 var(--border-ink);
-    transition: all 0.4s;
+    transition: all 0.4s; overflow: hidden;
+  }
+
+  .villain-slot .slot-img-wrap {
+    width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
 
   .villain-slot .mystery {
@@ -459,8 +449,8 @@
 
   .btn-reveal {
     background: var(--ink); color: var(--red-bright);
-    border: 4px solid var(--border-ink); padding: 12px 30px;
-    font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 3px;
+    border: 4px solid var(--border-ink); padding: 14px 44px;
+    font-family: 'Bangers', cursive; font-size: 36px; letter-spacing: 5px;
     cursor: pointer; box-shadow: 5px 5px 0 var(--border-ink);
     transition: transform 0.12s, box-shadow 0.12s;
     animation: revealPulse 1.5s ease-in-out infinite;
@@ -473,7 +463,61 @@
 
   .btn-reveal:hover  { background: var(--red-dark); color: var(--white); transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--border-ink); }
   .btn-reveal:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 var(--border-ink); }
-  .btn-reveal.done   { animation: none; color: #777; background: #eee; }
+  .btn-reveal.done         { animation: none; color: #777; background: #eee; }
+  .btn-reveal.villain-ready { animation: revealPulse 1.5s ease-in-out infinite; background: var(--ink); color: var(--yellow); border-color: var(--border-ink); }
+
+  /* SLOT LIGHTBOX */
+  .slot-lightbox {
+    position: fixed; inset: 0;
+    background: rgba(26,16,8,0.85);
+    z-index: 600;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .slot-lightbox.open { display: flex; }
+
+  .slot-lightbox-inner {
+    position: relative;
+    max-width: min(90vw, 500px);
+    max-height: 90vh;
+    border: 4px solid var(--border-ink);
+    box-shadow: 10px 10px 0 var(--border-ink);
+    overflow: hidden;
+  }
+
+  .slot-lightbox-inner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+
+  .slot-lightbox-caption {
+    padding: 10px 16px 8px;
+    background: var(--yellow);
+    border-top: 3px solid var(--border-ink);
+    text-align: center;
+  }
+
+  .slot-lightbox-caption.villain { background: var(--purple); }
+
+  .slot-lightbox-name {
+    font-family: 'Bangers', cursive; font-size: 28px; letter-spacing: 1px;
+    color: var(--ink); line-height: 1.1;
+  }
+
+  .slot-lightbox-caption.villain .slot-lightbox-name { color: var(--white); }
+
+  .slot-lightbox-game {
+    font-size: 16px; font-weight: 900; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgba(26,16,8,0.5); margin-top: 3px;
+  }
+
+  .slot-lightbox-caption.villain .slot-lightbox-game { color: rgba(255,255,255,0.5); }
 
   /* FLASH */
   .flash-overlay { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0; }
@@ -648,6 +692,24 @@
     align-items: center;
     justify-content: center;
     padding: 20px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-bolt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+    width: min(55vw, 600px);
+  }
+
+  .home-buttons {
+    position: relative;
+    z-index: 1;
   }
 
   .home-buttons {
@@ -911,17 +973,12 @@
 
       <div class="mode-desc" id="modeDesc">Drawing from <em>all characters</em></div>
 
-      <div class="assemble-status" id="assembleStatus"></div>
 
       <div class="hero-slots" id="heroSlots">
-        <div class="hero-slot" id="slot0"><div class="slot-num">1</div><div class="slot-label">HERO</div></div>
-        <div class="hero-slot" id="slot1"><div class="slot-num">2</div><div class="slot-label">HERO</div></div>
-        <div class="hero-slot" id="slot2"><div class="slot-num">3</div><div class="slot-label">HERO</div></div>
-        <div class="hero-slot" id="slot3"><div class="slot-num">4</div><div class="slot-label">HERO</div></div>
-      </div>
-
-      <div class="assembled-banner-wrap">
-        <div class="assembled-banner" id="assembledBanner">⭐ HEROES ASSEMBLED ⭐</div>
+        <div class="hero-slot" id="slot0"><div class="slot-img-wrap"><div class="slot-num">1</div><div class="slot-label">HERO</div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div></div>
+        <div class="hero-slot" id="slot1"><div class="slot-img-wrap"><div class="slot-num">2</div><div class="slot-label">HERO</div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div></div>
+        <div class="hero-slot" id="slot2"><div class="slot-img-wrap"><div class="slot-num">3</div><div class="slot-label">HERO</div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div></div>
+        <div class="hero-slot" id="slot3"><div class="slot-img-wrap"><div class="slot-num">4</div><div class="slot-label">HERO</div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div></div>
       </div>
 
       <div class="assemble-btn-wrap">
@@ -935,8 +992,10 @@
           <div class="villain-div-rule"></div>
         </div>
         <div class="villain-slot-wrap">
-          <div class="villain-slot" id="villainSlot">
-            <div class="mystery"><div class="mystery-q">?</div></div>
+          <div class="villain-grid">
+            <div class="villain-slot" id="villainSlot">
+              <div class="mystery"><div class="mystery-q">?</div></div>
+            </div>
           </div>
           <button class="btn-reveal" id="revealBtn" onclick="revealVillain()">☠ REVEAL YOUR DOOM ☠</button>
         </div>
@@ -948,6 +1007,12 @@
   <!-- HOME -->
   <div class="view active" id="view-home">
     <div class="home-view">
+
+      <!-- LIGHTNING BOLT -->
+      <svg class="home-bolt" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="120,0 40,180 100,180 60,400 180,160 110,160 160,0" fill="#1A1008"/>
+      </svg>
+
       <div class="home-buttons">
 
         <!-- VIEW ROSTER button — logo image -->
@@ -979,6 +1044,17 @@
   </div>
 
 
+</div>
+
+<!-- SLOT LIGHTBOX -->
+<div class="slot-lightbox" id="slotLightbox" onclick="closeSlotLightbox()">
+  <div class="slot-lightbox-inner" onclick="event.stopPropagation()">
+    <img id="slotLightboxImg" src="" alt="">
+    <div class="slot-lightbox-caption" id="slotLightboxCaption">
+      <div class="slot-lightbox-name" id="slotLightboxName"></div>
+      <div class="slot-lightbox-game" id="slotLightboxGame"></div>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -1596,34 +1672,41 @@ async function updateCharInSheet(c, played, defeated, notes) {
 
 // ASSEMBLE
 function setMode(m) {
+  if (m === assembleMode) return; // already on this mode
+  saveAssembleState();            // save current mode's state before switching
   assembleMode = m;
   document.getElementById('modeAll').classList.toggle('active', m==='all');
   document.getElementById('modeUnplayed').classList.toggle('active', m==='unplayed');
   document.getElementById('modeDesc').innerHTML = m==='all'
     ? `Drawing from <em>all characters</em>`
     : `Drawing from <em>unplayed heroes</em> &amp; <em>undefeated villains</em>`;
-  resetAssemble();
+  restoreAssembleState(m);        // restore the new mode's state (or show empty)
 }
 
 function resetAssemble() {
   pendingVillain = null;
   document.getElementById('villainSection').style.display = 'none';
-  document.getElementById('assembledBanner').classList.remove('show');
-  const st = document.getElementById('assembleStatus');
-  st.classList.remove('visible'); st.textContent = '';
+
+
   for (let i=0;i<4;i++) {
     const s = document.getElementById('slot'+i);
     s.className = 'hero-slot';
-    s.innerHTML = `<div class="slot-num">${i+1}</div><div class="slot-label">HERO</div>`;
+    s.innerHTML = `<div class="slot-img-wrap"><div class="slot-num">${i+1}</div><div class="slot-label">HERO</div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div>`;
+    s.onclick = null;
+    s.style.cursor = '';
+    s._charKey = null;
   }
   const vs = document.getElementById('villainSlot');
   vs.className = 'villain-slot';
-  vs.innerHTML = `<div class="mystery"><div class="mystery-q">?</div></div>`;
+  vs.innerHTML = `<div class="slot-img-wrap" style="aspect-ratio:1/1;position:relative"><div class="mystery"><div class="mystery-q">?</div></div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div>`;
+  vs.onclick = null;
+  vs.style.cursor = '';
   const rb = document.getElementById('revealBtn');
   rb.textContent = '☠ REVEAL YOUR DOOM ☠';
   rb.className   = 'btn-reveal';
   rb.onclick     = revealVillain;
   rb.disabled    = false;
+  document.getElementById('assembleBtn').textContent = '⚡ ASSEMBLE!';
 }
 
 async function assembleTeam() {
@@ -1653,20 +1736,21 @@ async function assembleTeam() {
   const msgs = ['ASSEMBLING…','CALLING THE HEROES…','UNITED WE STAND…','TEAM COMPLETE!'];
 
   for (let i=0;i<4;i++) {
-    statusEl.textContent = msgs[i];
-    statusEl.classList.add('visible');
+  
     await delay(i===0 ? 300 : 100);
     revealSlot(i, heroes[i]);
     await delay(600);
   }
 
-  statusEl.classList.remove('visible');
+
   await delay(200);
-  document.getElementById('assembledBanner').classList.add('show');
-  await delay(500);
+
   document.getElementById('villainSection').style.display = 'block';
+  syncVillainSlotSize();
   document.getElementById('villainSection').scrollIntoView({behavior:'smooth',block:'nearest'});
+  btn.textContent = '⚡ REASSEMBLE?';
   btn.disabled = false;
+  saveAssembleState();
 }
 
 function revealSlot(i, c) {
@@ -1674,11 +1758,14 @@ function revealSlot(i, c) {
   const art  = c.artUrl
     ? `<img class="slot-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none'">`
     : `<div class="slot-art-placeholder">${c.name[0]}</div>`;
-  slot.innerHTML = art + `<div class="slot-caption">
+  slot.innerHTML = `<div class="slot-img-wrap">${art}</div><div class="slot-caption">
     <div class="slot-caption-name">${c.name}</div>
     <div class="slot-caption-game">${c.game}</div>
   </div>`;
   slot.classList.add('revealed');
+  slot.style.cursor = 'pointer';
+  slot._charKey = cKey(c);
+  slot.onclick = () => openSlotLightbox(c, false);
 }
 
 async function revealVillain() {
@@ -1692,15 +1779,38 @@ async function revealVillain() {
   const art  = c.artUrl
     ? `<img class="slot-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none'">`
     : `<div class="slot-art-placeholder" style="background:var(--ink);color:rgba(255,255,255,0.1)">${c.name[0]}</div>`;
-  slot.innerHTML = art + `<div class="slot-caption">
+  slot.innerHTML = `<div class="slot-img-wrap">${art}</div><div class="slot-caption">
     <div class="slot-caption-name">${c.name}</div>
     <div class="slot-caption-game">${c.game}</div>
   </div>`;
   slot.classList.add('revealed');
-  btn.textContent = '⚡ REASSEMBLE';
-  btn.className   = 'btn-reveal done';
+  slot.style.cursor = 'pointer';
+  slot.onclick = () => openSlotLightbox(pendingVillain, true);
+  btn.textContent = '☠ TOO MUCH DOOM?';
+  btn.className   = 'btn-reveal villain-ready';
   btn.disabled    = false;
-  btn.onclick     = assembleTeam;
+  btn.onclick     = rerollVillain;
+  saveAssembleState();
+}
+
+async function rerollVillain() {
+  if (!allChars.length) return;
+  let vilPool = allChars.filter(c => (hasType(c,'villain')||hasType(c,'antihero')) && isDefeatable(c));
+  if (assembleMode==='unplayed') vilPool = vilPool.filter(c => getData(c).defeated === false);
+  if (vilPool.length < 1) { alert('No villains available!'); return; }
+  pendingVillain = shuffle(vilPool)[0];
+  // Reset villain slot and reveal fresh
+  const vs = document.getElementById('villainSlot');
+  vs.className = 'villain-slot';
+  vs.innerHTML = `<div class="slot-img-wrap" style="aspect-ratio:1/1;position:relative"><div class="mystery"><div class="mystery-q">?</div></div></div><div class="slot-caption" style="visibility:hidden"><div class="slot-caption-name">&nbsp;</div><div class="slot-caption-game">&nbsp;</div></div>`;
+  const rb = document.getElementById('revealBtn');
+  rb.textContent = '☠ REVEAL YOUR DOOM ☠';
+  rb.className   = 'btn-reveal';
+  rb.onclick     = revealVillain;
+  rb.disabled    = false;
+  // Auto-reveal after a short pause for drama
+  await delay(400);
+  revealVillain();
 }
 
 function doFlash(villain) {
@@ -1727,8 +1837,8 @@ function goToView(view) {
   if (viewEl) viewEl.classList.add('active');
   document.getElementById('fabSettings').classList.remove('active-settings');
   updateArrows(view);
-  // Re-render roster when navigating to it so data is always fresh
-  if (view === 'roster') renderRoster();
+  if (view === 'roster')  renderRoster();
+  if (view === 'assemble') restoreAssembleState();
 }
 
 function goHome() {
@@ -1755,6 +1865,110 @@ function toggleSettings() {
 function switchView(view) {
   goToView(view);
 }
+
+// SYNC VILLAIN SLOT SIZE TO HERO SLOT
+function syncVillainSlotSize() {
+  const heroSlot = document.getElementById('slot0');
+  const villainSlot = document.getElementById('villainSlot');
+  if (heroSlot && villainSlot) {
+    const w = heroSlot.getBoundingClientRect().width;
+    if (w > 0) villainSlot.style.width = w + 'px';
+  }
+}
+
+// SLOT LIGHTBOX
+function openSlotLightbox(c, isVillain) {
+  if (!c) return;
+  const img     = document.getElementById('slotLightboxImg');
+  const caption = document.getElementById('slotLightboxCaption');
+  const name    = document.getElementById('slotLightboxName');
+  const game    = document.getElementById('slotLightboxGame');
+
+  img.src = c.artUrl ? proxyImg(c.artUrl) : '';
+  img.style.display = c.artUrl ? 'block' : 'none';
+  name.textContent = c.name;
+  game.textContent = c.game;
+  caption.className = 'slot-lightbox-caption' + (isVillain ? ' villain' : '');
+  document.getElementById('slotLightbox').classList.add('open');
+}
+
+function closeSlotLightbox() {
+  document.getElementById('slotLightbox').classList.remove('open');
+}
+
+// ASSEMBLE STATE PERSISTENCE
+function saveAssembleState() {
+  const state = {
+    slots: [],
+    villain: null,
+    villainRevealed: false,
+    villainVisible: document.getElementById('villainSection').style.display !== 'none',
+  };
+  for (let i=0;i<4;i++) {
+    const s = document.getElementById('slot'+i);
+    if (s.classList.contains('revealed') && s._charKey) {
+      state.slots.push({ html: s.innerHTML, charKey: s._charKey });
+    } else {
+      state.slots.push(null);
+    }
+  }
+  const vs = document.getElementById('villainSlot');
+  state.villainRevealed = vs.classList.contains('revealed');
+  if (vs.classList.contains('revealed')) state.villain = vs.innerHTML;
+  state.pendingVillain = pendingVillain ? cKey(pendingVillain) : null;
+  sessionStorage.setItem('mu_assemble_' + assembleMode, JSON.stringify(state));
+}
+
+function restoreAssembleState(mode) {
+  const m = mode || assembleMode;
+  const raw = sessionStorage.getItem('mu_assemble_' + m);
+
+  // Always reset slots first
+  resetAssemble();
+
+  if (!raw) return;
+  try {
+    const state = JSON.parse(raw);
+    for (let i=0;i<4;i++) {
+      if (state.slots[i]) {
+        const s = document.getElementById('slot'+i);
+        s.className = 'hero-slot revealed';
+        const slotData = state.slots[i];
+        s.innerHTML = typeof slotData === 'object' ? slotData.html : slotData;
+        // Re-attach lightbox click handler using saved char key
+        if (typeof slotData === 'object' && slotData.charKey && allChars.length) {
+          const c = allChars.find(x => cKey(x) === slotData.charKey);
+          if (c) {
+            s._charKey = slotData.charKey;
+            s.style.cursor = 'pointer';
+            s.onclick = () => openSlotLightbox(c, false);
+          }
+        }
+      }
+    }
+    if (state.villainVisible) {
+      document.getElementById('villainSection').style.display = 'block';
+      document.getElementById('assembleBtn').textContent = '⚡ REASSEMBLE?';
+    }
+    if (state.pendingVillain && allChars.length) {
+      pendingVillain = allChars.find(c => cKey(c) === state.pendingVillain) || null;
+    }
+    if (state.villain) {
+      const vs = document.getElementById('villainSlot');
+      vs.className = 'villain-slot revealed';
+      vs.innerHTML = state.villain;
+      vs.style.cursor = 'pointer';
+      if (pendingVillain) vs.onclick = () => openSlotLightbox(pendingVillain, true);
+      const rb = document.getElementById('revealBtn');
+      rb.textContent = '☠ TOO MUCH DOOM?';
+      rb.className = 'btn-reveal villain-ready';
+      rb.onclick = rerollVillain;
+      rb.disabled = false;
+    }
+  } catch(e) { sessionStorage.removeItem('mu_assemble_' + m); }
+}
+
+window.addEventListener('resize', syncVillainSlotSize);
 
 // INIT
 window.addEventListener('load', () => {
