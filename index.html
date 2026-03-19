@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARVEL UNITED — Collection HQ</title>
+<link rel="icon" type="image/png" href="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1CMfz7O4OYSTGM4M4gj6GxHDW-ndISZK4">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:        #D42B2B;
+    --red-dark:   #9E1A1A;
+    --red-bright: #FF3D3D;
+    --yellow:     #FFD600;
+    --yellow-dark:#C9A800;
+    --blue:       #1B5FBF;
+    --blue-bright:#2878E8;
+    --blue-light: #EBF2FF;
+    --ink:        #1A1008;
+    --paper:      #FFF8EC;
+    --panel-cream:#FFF3D6;
+    --panel-tan:  #F5E8C8;
+    --border-ink: #1A1008;
+    --purple:     #6B1FA0;
+    --purple-bright: #9B32DC;
+    --green:      #1A7A3A;
+    --green-bright:#2BB050;
+    --white:      #FFFFFF;
+    --halftone-dark: rgba(26,16,8,0.06);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--halftone-dark) 1.5px, transparent 1.5px);
+    background-size: 14px 14px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+
+
+
+
+  /* API CONFIG PANEL (settings view) */
+  .api-input {
+    width: 100%;
+    background: var(--white);
+    border: 3px solid var(--border-ink);
+    padding: 9px 12px;
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+    outline: none;
+    box-shadow: 3px 3px 0 var(--border-ink);
+    transition: box-shadow 0.1s, border-color 0.1s;
+    margin-bottom: 12px;
+  }
+
+  .api-input:focus { box-shadow: 4px 4px 0 var(--red); border-color: var(--red); }
+
+  .btn-sync {
+    background: var(--red); color: var(--white);
+    border: 3px solid var(--border-ink);
+    padding: 10px 24px;
+    font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--border-ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+  }
+
+  .btn-sync:hover { background: var(--red-bright); }
+  .btn-sync:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--border-ink); }
+
+  .sync-status { font-size: 12px; font-weight: 900; letter-spacing: 1px; color: #999; margin-top: 10px; display: block; }
+  .sync-status.ok  { color: var(--green-bright); }
+  .sync-status.err { color: var(--red-bright); }
+
+  .settings-panel {
+    background: var(--panel-cream);
+    border: 3px solid var(--border-ink);
+    box-shadow: 5px 5px 0 var(--border-ink);
+    padding: 20px;
+    max-width: 480px;
+  }
+
+  .settings-title {
+    font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 3px;
+    color: var(--red); margin-bottom: 16px;
+    border-bottom: 3px solid var(--border-ink); padding-bottom: 10px;
+  }
+
+  .settings-label {
+    font-family: 'Bangers', cursive; font-size: 15px; letter-spacing: 2px;
+    color: var(--ink); display: block; margin-bottom: 6px;
+  }
+
+  /* NAV */
+  /* nav removed */
+
+  /* CONTENT */
+  .content { position: relative; z-index: 2; padding: 20px 20px 80px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ROSTER CONTROLS */
+  .roster-controls { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+
+  .search-box {
+    background: var(--white); border: 3px solid var(--border-ink);
+    padding: 9px 14px; color: var(--ink);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+    outline: none; flex: 1; min-width: 160px;
+    box-shadow: 3px 3px 0 var(--border-ink); transition: box-shadow 0.1s;
+  }
+
+  .search-box:focus { box-shadow: 4px 4px 0 var(--blue); border-color: var(--blue); }
+  .search-box::placeholder { color: #bbb; }
+
+  .filter-btn {
+    background: var(--white); border: 3px solid var(--border-ink);
+    padding: 9px 16px; color: var(--ink);
+    font-family: 'Bangers', cursive; font-size: 17px; letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--border-ink);
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover { background: var(--panel-cream); }
+
+  .filter-btn.active {
+    transform: translate(2px,2px);
+    box-shadow: 1px 1px 0 var(--border-ink);
+  }
+
+  .filter-btn.all-btn.active      { background: var(--ink); color: var(--yellow); }
+  .filter-btn.hero-btn.active     { background: var(--blue); color: var(--white); }
+  .filter-btn.villain-btn.active  { background: var(--purple); color: var(--white); }
+  .filter-btn.antihero-btn.active { background: #B85C00; color: var(--white); }
+  .filter-btn.pet-btn.active      { background: var(--green); color: var(--white); }
+  .filter-btn.unplayed-btn.active { background: var(--red); color: var(--white); }
+
+  /* WAVE HEADERS */
+  .wave-header { display: flex; align-items: center; gap: 12px; margin: 24px 0 12px; }
+
+  .wave-banner {
+    font-family: 'Bangers', cursive; font-size: 18px; letter-spacing: 3px;
+    color: var(--white); padding: 4px 16px 3px;
+    border: 3px solid var(--border-ink); box-shadow: 3px 3px 0 var(--border-ink);
+    white-space: nowrap;
+  }
+
+  .wave-banner.w1 { background: var(--red); }
+  .wave-banner.w2 { background: var(--yellow-dark); color: var(--ink); }
+  .wave-banner.w3 { background: var(--blue); }
+  .wave-banner.wo { background: var(--ink); }
+
+  .wave-rule { flex: 1; height: 3px; background: var(--border-ink); }
+  .wave-count { font-family: 'Bangers', cursive; font-size: 15px; color: rgba(26,16,8,0.35); letter-spacing: 1px; }
+
+  /* CHARACTER CARDS */
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 14px;
+  }
+
+  .char-card {
+    background: var(--white);
+    border: 3px solid var(--border-ink);
+    box-shadow: 5px 5px 0 var(--border-ink);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+    position: relative;
+    animation: cardIn 0.25s ease-out both;
+    overflow: hidden;
+  }
+
+  @keyframes cardIn {
+    from { opacity:0; transform: translateY(10px) rotate(-1deg); }
+    to   { opacity:1; transform: translateY(0) rotate(0deg); }
+  }
+
+  .char-card:hover  { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--border-ink); }
+  .char-card:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--border-ink); }
+
+  .char-card::before { content:''; display:block; height:5px; background: var(--blue); }
+  .char-card.is-villain::before  { background: var(--purple); }
+  .char-card.is-antihero::before { background: linear-gradient(90deg, var(--blue) 50%, var(--purple) 50%); }
+  .char-card.is-pet::before      { background: var(--green); }
+
+  .char-art-wrap {
+    position: relative; width: 100%; aspect-ratio: 1/1;
+    overflow: hidden; background: var(--panel-tan);
+  }
+
+  .char-art { width:100%; height:100%; object-fit: cover; display: block; }
+
+  .char-art-placeholder {
+    width:100%; height:100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bangers', cursive; font-size: 56px; color: rgba(26,16,8,0.12);
+    background: var(--panel-tan);
+    background-image: radial-gradient(circle, rgba(26,16,8,0.06) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+
+  .played-stamp {
+    position: absolute; top: 6px; right: 6px;
+    background: var(--green); color: var(--white);
+    font-family: 'Bangers', cursive; font-size: 10px; letter-spacing: 1px;
+    padding: 2px 6px; border: 2px solid var(--border-ink);
+    box-shadow: 2px 2px 0 var(--border-ink); transform: rotate(3deg);
+  }
+
+  .defeated-stamp {
+    position: absolute; top: 6px; left: 6px;
+    background: var(--red); color: var(--white);
+    font-family: 'Bangers', cursive; font-size: 10px; letter-spacing: 1px;
+    padding: 2px 6px; border: 2px solid var(--border-ink);
+    box-shadow: 2px 2px 0 var(--border-ink); transform: rotate(-3deg);
+  }
+
+  .char-info {
+    padding: 8px 9px 7px;
+    background: var(--white);
+    border-top: 2px solid var(--border-ink);
+  }
+
+  .char-name { font-family: 'Bangers', cursive; font-size: 16px; letter-spacing: 0.5px; line-height: 1.1; color: var(--ink); }
+  .char-game { font-size: 9px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; color: #999; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .char-tags { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+
+  .ctag {
+    font-size: 8px; font-weight: 900; letter-spacing: 1px;
+    text-transform: uppercase; padding: 1px 6px; border: 2px solid;
+  }
+
+  .ctag-hero     { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+  .ctag-villain  { background: #F3E6FF; color: var(--purple); border-color: var(--purple); }
+  .ctag-antihero { background: #FFF0D6; color: #B85C00; border-color: #B85C00; }
+  .ctag-pet      { background: #E6FFF0; color: #1A7A3A; border-color: #1A7A3A; }
+
+  .char-card.is-done { opacity: 0.5; }
+  .char-card.is-done:hover { opacity: 1; }
+
+  /* EMPTY */
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    border: 3px dashed rgba(26,16,8,0.2);
+    background: var(--panel-cream); margin: 20px 0;
+  }
+
+  .empty-icon { font-size: 60px; margin-bottom: 12px; }
+
+  .empty-title {
+    font-family: 'Bangers', cursive; font-size: 28px;
+    letter-spacing: 2px; color: rgba(26,16,8,0.4); margin-bottom: 8px;
+  }
+
+  .empty-body {
+    font-size: 13px; font-weight: 700; color: rgba(26,16,8,0.4);
+    line-height: 1.5; max-width: 300px; margin: 0 auto;
+  }
+
+  /* ASSEMBLE */
+  .assemble-view { max-width: 860px; margin: 0 auto; }
+
+  .mode-toggle {
+    display: flex; border: 3px solid var(--border-ink);
+    box-shadow: 4px 4px 0 var(--border-ink); overflow: hidden; margin-bottom: 20px;
+  }
+
+  .mode-btn {
+    flex: 1; padding: 12px;
+    font-family: 'Bangers', cursive; font-size: 20px; letter-spacing: 2px;
+    cursor: pointer; color: rgba(26,16,8,0.4); background: var(--white);
+    border: none; border-right: 3px solid var(--border-ink); transition: all 0.15s;
+  }
+
+  .mode-btn:last-child { border-right: none; }
+  .mode-btn:hover { background: var(--panel-cream); color: var(--ink); }
+  .mode-btn.active { background: var(--red); color: var(--white); }
+
+  .mode-desc {
+    font-size: 12px; font-weight: 900; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(26,16,8,0.45);
+    text-align: center; margin-bottom: 22px;
+  }
+
+  .mode-desc em { color: var(--red); font-style: normal; }
+
+  .assemble-status {
+    font-family: 'Bangers', cursive; font-size: 26px; letter-spacing: 5px;
+    text-align: center; color: var(--blue); height: 34px; margin-bottom: 16px;
+    opacity: 0; transition: opacity 0.3s;
+  }
+
+  .assemble-status.visible { opacity: 1; }
+
+  /* HERO SLOTS */
+  .hero-slots { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+
+  @media (max-width: 560px) { .hero-slots { grid-template-columns: repeat(2,1fr); } }
+
+  .hero-slot {
+    aspect-ratio: 1/1; border: 3px dashed rgba(26,16,8,0.2);
+    background: var(--panel-cream);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; transition: all 0.3s;
+    background-image: radial-gradient(circle, rgba(26,16,8,0.05) 1.5px, transparent 1.5px);
+    background-size: 12px 12px;
+  }
+
+  .hero-slot.revealed {
+    border: 3px solid var(--border-ink); box-shadow: 6px 6px 0 var(--border-ink);
+    background-image: none;
+    animation: slotReveal 0.45s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+  }
+
+  @keyframes slotReveal {
+    0%   { transform: scale(0.75) rotate(-5deg); opacity:0; }
+    60%  { transform: scale(1.06) rotate(1deg); opacity:1; }
+    100% { transform: scale(1) rotate(0deg); opacity:1; }
+  }
+
+  .slot-num   { font-family: 'Bangers', cursive; font-size: 52px; color: rgba(26,16,8,0.08); line-height:1; }
+  .slot-label { font-family: 'Bangers', cursive; font-size: 13px; letter-spacing: 3px; color: rgba(26,16,8,0.18); }
+
+  .slot-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+  .slot-art-placeholder {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Bangers',cursive; font-size:72px; color:rgba(26,16,8,0.1);
+    background: var(--panel-tan);
+    background-image: radial-gradient(circle, rgba(26,16,8,0.06) 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+  }
+
+  .slot-caption {
+    position:absolute; bottom:0; left:0; right:0;
+    background: var(--yellow); border-top: 3px solid var(--border-ink);
+    padding: 5px 8px 4px; text-align: center;
+  }
+
+  .slot-caption-name { font-family:'Bangers',cursive; font-size:14px; letter-spacing:0.5px; color:var(--ink); line-height:1.1; }
+  .slot-caption-game { font-size:8px; font-weight:900; letter-spacing:1px; text-transform:uppercase; color:rgba(26,16,8,0.5); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  /* ASSEMBLED BANNER */
+  .assembled-banner-wrap { text-align: center; margin-bottom: 24px; }
+
+  .assembled-banner {
+    display: inline-block;
+    font-family: 'Bangers', cursive; font-size: 34px; letter-spacing: 5px;
+    color: var(--white); background: var(--red);
+    border: 3px solid var(--border-ink); box-shadow: 5px 5px 0 var(--border-ink);
+    padding: 10px 24px;
+    opacity: 0; transform: scale(0.85) rotate(-1deg);
+    transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+
+  .assembled-banner.show { opacity:1; transform: scale(1) rotate(-1deg); }
+
+  /* ASSEMBLE BTN */
+  .assemble-btn-wrap { text-align: center; margin-bottom: 28px; }
+
+  .btn-assemble {
+    background: var(--red); color: var(--white);
+    border: 4px solid var(--border-ink); padding: 14px 44px;
+    font-family: 'Bangers', cursive; font-size: 36px; letter-spacing: 5px;
+    cursor: pointer; box-shadow: 6px 6px 0 var(--border-ink);
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  .btn-assemble:hover  { background: var(--red-bright); transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--border-ink); }
+  .btn-assemble:active { transform: translate(4px,4px); box-shadow: 2px 2px 0 var(--border-ink); }
+
+  /* VILLAIN */
+  .villain-section { margin-top: 20px; text-align: center; }
+
+  .villain-divider { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+  .villain-div-rule { flex:1; height:3px; background:var(--border-ink); }
+
+  .villain-div-label {
+    background: var(--ink); color: var(--red-bright);
+    font-family: 'Bangers', cursive; font-size: 13px; letter-spacing: 4px;
+    padding: 4px 14px;
+    border: 3px solid var(--border-ink); box-shadow: 3px 3px 0 var(--border-ink);
+  }
+
+  .villain-slot-wrap { display:flex; flex-direction:column; align-items:center; gap:16px; }
+
+  .villain-slot {
+    width: 200px; aspect-ratio: 1/1;
+    border: 4px solid var(--border-ink);
+    position: relative; overflow: hidden;
+    background: var(--ink); box-shadow: 6px 6px 0 var(--border-ink);
+    transition: all 0.4s;
+  }
+
+  .villain-slot .mystery {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background: var(--ink);
+    background-image: repeating-linear-gradient(-45deg,
+      rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 10px,
+      transparent 10px, transparent 20px);
+  }
+
+  .mystery-q {
+    font-family:'Bangers',cursive; font-size:96px;
+    color: var(--red); text-shadow: 4px 4px 0 var(--red-dark); line-height:1;
+  }
+
+  .villain-slot.revealed {
+    box-shadow: 8px 8px 0 var(--purple), 14px 14px 0 var(--border-ink);
+    animation: villainReveal 0.5s cubic-bezier(0.175,0.885,0.32,1.275) forwards,
+               villainShake 0.4s 0.1s ease-out;
+  }
+
+  @keyframes villainReveal {
+    0%   { transform: scale(0.7) rotate(6deg); opacity:0; }
+    70%  { transform: scale(1.05) rotate(-2deg); opacity:1; }
+    100% { transform: scale(1) rotate(0deg); opacity:1; }
+  }
+
+  @keyframes villainShake {
+    0%,100% { transform:translateX(0); }
+    20%     { transform:translateX(-8px) rotate(-1deg); }
+    40%     { transform:translateX(8px) rotate(1deg); }
+    60%     { transform:translateX(-5px); }
+    80%     { transform:translateX(5px); }
+  }
+
+  .villain-slot .slot-caption { background: var(--purple); }
+  .villain-slot .slot-caption-name { color: var(--white); }
+  .villain-slot .slot-caption-game { color: rgba(255,255,255,0.5); }
+
+  .btn-reveal {
+    background: var(--ink); color: var(--red-bright);
+    border: 4px solid var(--border-ink); padding: 12px 30px;
+    font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 3px;
+    cursor: pointer; box-shadow: 5px 5px 0 var(--border-ink);
+    transition: transform 0.12s, box-shadow 0.12s;
+    animation: revealPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes revealPulse {
+    0%,100% { box-shadow: 5px 5px 0 var(--border-ink); }
+    50%     { box-shadow: 5px 5px 0 var(--border-ink), 0 0 18px rgba(212,43,43,0.4); }
+  }
+
+  .btn-reveal:hover  { background: var(--red-dark); color: var(--white); transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--border-ink); }
+  .btn-reveal:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 var(--border-ink); }
+  .btn-reveal.done   { animation: none; color: #777; background: #eee; }
+
+  /* FLASH */
+  .flash-overlay { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0; }
+  .flash-overlay.go         { animation: flashGo 0.35s ease-out forwards; background: var(--white); }
+  .flash-overlay.villain-go { animation: flashGo 0.45s ease-out forwards; background: #F0C0FF; }
+
+  @keyframes flashGo { 0% { opacity:0.85; } 100% { opacity:0; } }
+
+  /* MODAL */
+  .modal-overlay {
+    position:fixed; inset:0;
+    background: rgba(26,16,8,0.7);
+    z-index:500; display:none;
+    align-items:center; justify-content:center; padding:20px;
+  }
+
+  .modal-overlay.open { display:flex; }
+
+  .modal {
+    background: var(--paper);
+    border: 4px solid var(--border-ink); box-shadow: 8px 8px 0 var(--border-ink);
+    max-width: 380px; width: 100%; position: relative;
+    max-height: 90vh; overflow-y: auto;
+  }
+
+  .modal-header {
+    background: var(--red); border-bottom: 4px solid var(--border-ink);
+    padding: 10px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+
+  .modal-title { font-family:'Bangers',cursive; font-size:22px; letter-spacing:2px; color:var(--white); }
+  .modal-close { font-family:'Bangers',cursive; font-size:22px; color:var(--white); background:none; border:none; cursor:pointer; line-height:1; padding:0 4px; }
+
+  .modal-art { width:100%; max-height:220px; object-fit:cover; object-position:top; display:block; border-bottom:3px solid var(--border-ink); }
+  .modal-body { padding:16px; }
+  .modal-sub  { font-size:10px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+
+  .modal-type-badge {
+    display:inline-block; font-family:'Bangers',cursive; font-size:14px; letter-spacing:1px;
+    padding:2px 10px; border:2px solid var(--border-ink); margin-bottom:14px;
+  }
+
+  .modal-type-badge.hero     { background:var(--blue); color:var(--white); }
+  .modal-type-badge.villain  { background:var(--purple); color:var(--white); }
+  .modal-type-badge.antihero { background:#B85C00; color:var(--white); }
+  .modal-type-badge.pet      { background:var(--green); color:var(--white); }
+
+  .modal-checks { display:flex; gap:16px; margin-bottom:14px; }
+
+  .check-label { display:flex; align-items:center; gap:7px; font-size:14px; font-weight:900; cursor:pointer; user-select:none; }
+  .check-label input[type=checkbox] { width:18px; height:18px; accent-color:var(--red); cursor:pointer; }
+
+  .modal-notes {
+    width:100%; background:var(--white); border:3px solid var(--border-ink);
+    padding:9px 12px; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:700; font-size:13px;
+    resize:vertical; min-height:80px; outline:none;
+    box-shadow:3px 3px 0 var(--border-ink);
+  }
+
+  .modal-notes:focus { border-color:var(--blue); }
+
+  .btn-modal-save {
+    width:100%; margin-top:12px;
+    background:var(--red); color:var(--white);
+    border:3px solid var(--border-ink); padding:11px;
+    font-family:'Bangers',cursive; font-size:22px; letter-spacing:2px;
+    cursor:pointer; box-shadow:4px 4px 0 var(--border-ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .btn-modal-save:hover  { background:var(--red-bright); }
+  .btn-modal-save:active { transform:translate(3px,3px); box-shadow:1px 1px 0 var(--border-ink); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:8px; }
+  ::-webkit-scrollbar-track { background:var(--panel-cream); }
+  ::-webkit-scrollbar-thumb { background:var(--border-ink); }
+  ::-webkit-scrollbar-thumb:hover { background:var(--red); }
+
+  .view-settings { padding: 24px 0; }
+
+  /* FLOATING COG BUTTON */
+  .fab-settings {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 150;
+    background: none;
+    border: none;
+    box-shadow: none;
+    font-size: 36px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    opacity: 0.2;
+    transition: opacity 0.2s, transform 0.2s;
+    user-select: none;
+  }
+
+  .fab-settings:hover {
+    opacity: 1;
+    transform: rotate(30deg);
+  }
+
+  .fab-settings:active {
+    transform: rotate(60deg);
+  }
+
+  .fab-settings.active-settings {
+    opacity: 1;
+  }
+
+  /* ══════════════════════════════
+     HOME VIEW
+  ══════════════════════════════ */
+  .home-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 160px);
+    padding: 20px 0;
+  }
+
+  .home-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 840px;
+  }
+
+  .home-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    transition: transform 0.12s, filter 0.12s;
+    filter: drop-shadow(6px 6px 0 rgba(26,16,8,0.0));
+  }
+
+  .home-btn:hover {
+    transform: translate(-4px, -4px);
+    filter: drop-shadow(8px 8px 0 rgba(26,16,8,0.35));
+  }
+
+  .home-btn:active {
+    transform: translate(4px, 4px);
+    filter: drop-shadow(2px 2px 0 rgba(26,16,8,0.35));
+  }
+
+  .home-btn-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (min-width: 700px) {
+    .home-buttons {
+      flex-direction: row;
+      max-width: 1380px;
+    }
+
+    .home-btn {
+      flex: 1;
+    }
+  }
+
+  /* SIDE PEEK BUTTONS */
+  .side-arrow {
+    position: fixed;
+    top: 50%;
+    z-index: 100;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.7;
+    transition: opacity 0.25s, transform 0.25s;
+    display: none; /* shown via JS */
+    width: 690px;
+  }
+
+  .side-arrow img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Right: peeking in from right, 65% off screen (690 * 0.65 = 449px) */
+  .side-arrow.right {
+    right: -449px;
+    transform: translateY(-50%);
+  }
+
+  /* Left: peeking in from left, 65% off screen */
+  .side-arrow.left {
+    left: -449px;
+    transform: translateY(-50%);
+  }
+
+  .side-arrow.right:hover {
+    opacity: 1;
+    transform: translateY(-50%) translateX(-20px);
+  }
+
+  .side-arrow.left:hover {
+    opacity: 1;
+    transform: translateY(-50%) translateX(20px);
+  }
+
+  .side-arrow:active { opacity: 0.8; }
+</style>
+</head>
+<body>
+
+<div class="flash-overlay" id="flashOverlay"></div>
+
+
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ROSTER -->
+  <div class="view" id="view-roster">
+    <div class="roster-controls">
+      <input class="search-box" type="text" id="searchBox" placeholder="Search by name or set…" oninput="renderRoster()">
+      <button class="filter-btn all-btn active"        onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn hero-btn"              onclick="setFilter('hero',this)">Heroes</button>
+      <button class="filter-btn villain-btn"           onclick="setFilter('villain',this)">Villains</button>
+      <button class="filter-btn antihero-btn"          onclick="setFilter('antihero',this)">Anti-Heroes</button>
+      <button class="filter-btn pet-btn"               onclick="setFilter('pet',this)">Pets</button>
+      <button class="filter-btn unplayed-btn"          onclick="setFilter('unplayed',this)">Unplayed</button>
+    </div>
+    <div id="rosterContent"></div>
+  </div>
+
+  <!-- ASSEMBLE -->
+  <div class="view" id="view-assemble">
+    <div class="assemble-view">
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="modeAll"      onclick="setMode('all')">⭐ FULL ROSTER</button>
+        <button class="mode-btn"        id="modeUnplayed" onclick="setMode('unplayed')">🆕 UNPLAYED ONLY</button>
+      </div>
+
+      <div class="mode-desc" id="modeDesc">Drawing from <em>all characters</em></div>
+
+      <div class="assemble-status" id="assembleStatus"></div>
+
+      <div class="hero-slots" id="heroSlots">
+        <div class="hero-slot" id="slot0"><div class="slot-num">1</div><div class="slot-label">HERO</div></div>
+        <div class="hero-slot" id="slot1"><div class="slot-num">2</div><div class="slot-label">HERO</div></div>
+        <div class="hero-slot" id="slot2"><div class="slot-num">3</div><div class="slot-label">HERO</div></div>
+        <div class="hero-slot" id="slot3"><div class="slot-num">4</div><div class="slot-label">HERO</div></div>
+      </div>
+
+      <div class="assembled-banner-wrap">
+        <div class="assembled-banner" id="assembledBanner">⭐ HEROES ASSEMBLED ⭐</div>
+      </div>
+
+      <div class="assemble-btn-wrap">
+        <button class="btn-assemble" id="assembleBtn" onclick="assembleTeam()">⚡ ASSEMBLE!</button>
+      </div>
+
+      <div class="villain-section" id="villainSection" style="display:none">
+        <div class="villain-divider">
+          <div class="villain-div-rule"></div>
+          <div class="villain-div-label">☠ YOUR ENEMY AWAITS ☠</div>
+          <div class="villain-div-rule"></div>
+        </div>
+        <div class="villain-slot-wrap">
+          <div class="villain-slot" id="villainSlot">
+            <div class="mystery"><div class="mystery-q">?</div></div>
+          </div>
+          <button class="btn-reveal" id="revealBtn" onclick="revealVillain()">☠ REVEAL YOUR DOOM ☠</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div class="view active" id="view-home">
+    <div class="home-view">
+      <div class="home-buttons">
+
+        <!-- VIEW ROSTER button — logo image -->
+        <button class="home-btn" onclick="goToView('roster')">
+          <img class="home-btn-svg" src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1RzpYci4wriupMAmwLUKXIO60HEFmkGnK" alt="View Roster">
+        </button>
+
+        <!-- ASSEMBLE TEAM button — logo image -->
+        <button class="home-btn" onclick="goToView('assemble')">
+          <img class="home-btn-svg" src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1Ctvs5h8c1P-8Vu2c577ZjYBqKg65kue0" alt="Assemble Team">
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="view view-settings" id="view-settings">
+    <div class="settings-panel">
+      <div class="settings-title">⚙️ SETTINGS</div>
+      <label class="settings-label">🔑 GOOGLE SHEETS API KEY</label>
+      <input class="api-input" type="password" id="apiKeyInput" placeholder="Paste your API key here…">
+      <button class="btn-sync" onclick="syncSheet()">⚡ SYNC ROSTER</button>
+      <span class="sync-status" id="syncStatus">Not synced</span>
+      <button class="btn-sync" onclick="goHome()" style="margin-top:16px;background:var(--ink);">🏠 HOME</button>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="charModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">CHARACTER</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <img class="modal-art" id="modalArt" src="" alt="" style="display:none">
+    <div class="modal-body">
+      <div class="modal-sub"       id="modalSub"></div>
+      <div class="modal-type-badge" id="modalTypeBadge"></div>
+      <div class="modal-checks">
+        <label class="check-label"><input type="checkbox" id="modalPlayed">   Played</label>
+        <label class="check-label"><input type="checkbox" id="modalDefeated"> Defeated</label>
+      </div>
+      <textarea class="modal-notes" id="modalNotes" placeholder="Notes…"></textarea>
+      <button class="btn-modal-save" onclick="saveModal()">SAVE CHANGES</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDE PEEK BUTTONS -->
+<!-- Right edge: Assemble logo, navigates to Assemble -->
+<button class="side-arrow right" id="arrowRight" onclick="goToView('assemble')" title="Assemble Team">
+  <img src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1Ctvs5h8c1P-8Vu2c577ZjYBqKg65kue0" alt="Assemble Team">
+</button>
+
+<!-- Left edge: Roster logo, navigates to Roster -->
+<button class="side-arrow left" id="arrowLeft" onclick="goToView('roster')" title="View Roster">
+  <img src="https://wsrv.nl/?url=https://drive.google.com/uc?export%3Dview%26id%3D1RzpYci4wriupMAmwLUKXIO60HEFmkGnK" alt="View Roster">
+</button>
+
+<!-- FLOATING SETTINGS COG -->
+<button class="fab-settings" id="fabSettings" onclick="toggleSettings()" title="Settings">⚙️</button>
+
+<script>
+// CONFIG
+const SHEET_ID  = '130InBl6ZWOaRTwVgz9uk8bSUHt1teA-pZ406R1pkEdM';
+const SHEET_TAB = 'Marvel_United';
+// A=Version(wave#) | B=Game(expansion) | C=Characters(name) | D=Played | E=Defeated | F=Notes | G=Artwork_Url | H=Character_Type
+
+// IMAGE PROXY — routes Google Drive URLs through wsrv.nl to bypass CORS/hotlink blocks
+function proxyImg(url) {
+  if (!url) return '';
+  return 'https://wsrv.nl/?url=' + encodeURIComponent(url);
+}
+
+// STATE
+let allChars       = [];
+let localOverrides = {};
+let currentFilter  = 'all';
+let assembleMode   = 'all';
+let pendingVillain = null;
+let currentModalKey= null;
+
+// UTILS
+const cKey  = c => `${c.name}||${c.game}`;
+const delay = ms => new Promise(r => setTimeout(r, ms));
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function getData(c) {
+  const ov = localOverrides[cKey(c)] || {};
+  return {
+    played:   ov.played   !== undefined ? ov.played   : c.played,
+    defeated: ov.defeated !== undefined ? ov.defeated : c.defeated,
+    notes:    ov.notes    !== undefined ? ov.notes    : c.notes,
+  };
+}
+
+// TYPE NORMALISATION — reads column H: Hero | Villain | Anti-Hero | Pet
+function normaliseType(raw) {
+  const t = raw.trim().toLowerCase();
+  if (t === 'villain')   return 'villain';
+  if (t === 'anti-hero') return 'antihero';
+  if (t === 'pet')       return 'pet';
+  return 'hero'; // default / "Hero"
+}
+
+// WAVE HELPERS
+function waveName(v) {
+  const n = parseInt(v);
+  if (n===1) return 'Wave 1 — Classic Marvel';
+  if (n===2) return 'Wave 2 — X-Men';
+  if (n===3) return 'Wave 3 — Multiverse';
+  return v || 'Other';
+}
+
+function waveCls(v) {
+  const n = parseInt(v);
+  if (n===1) return 'w1';
+  if (n===2) return 'w2';
+  if (n===3) return 'w3';
+  return 'wo';
+}
+
+// SYNC
+async function syncSheet() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key) { setStatus('Enter your API key first','err'); return; }
+  setStatus('Syncing…','');
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_TAB+'!A2:H')}?key=${encodeURIComponent(key)}`;
+  try {
+    const res  = await fetch(url);
+    if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||res.statusText); }
+    const data = await res.json();
+    allChars = (data.values||[])
+      .filter(r => r[2])
+      .map(r => ({
+        version: (r[0]||'').trim(),
+        game:    (r[1]||'').trim(),
+        name:    (r[2]||'').trim(),
+        played:  (r[3]||'').trim().toUpperCase()==='TRUE',
+        defeated:(r[4]||'').trim().toUpperCase()==='TRUE',
+        notes:   (r[5]||'').trim(),
+        artUrl:  (r[6]||'').trim(),
+        type:    normaliseType(r[7]||''),
+      }));
+    localStorage.setItem('mu_apiKey', key);
+    updateStats();
+    renderRoster();
+    setStatus(`✓ ${allChars.length} characters loaded`, 'ok');
+  } catch(e) {
+    setStatus(`✗ ${e.message}`, 'err');
+  }
+}
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('syncStatus');
+  el.textContent = msg;
+  el.className = 'sync-status ' + cls;
+}
+
+// STATS
+function updateStats() {
+  // Stats row removed — function kept for future use
+}
+
+// ROSTER
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRoster();
+}
+
+function renderRoster() {
+  const q   = (document.getElementById('searchBox').value||'').toLowerCase();
+  const box = document.getElementById('rosterContent');
+
+  if (!allChars.length) {
+    box.innerHTML = `<div class="empty-state"><div class="empty-icon">🦸</div><div class="empty-title">No Roster Loaded</div><div class="empty-body">Enter your Google Sheets API key and hit SYNC ROSTER to load your collection.</div></div>`;
+    return;
+  }
+
+  let chars = allChars.filter(c => {
+    if (q && !c.name.toLowerCase().includes(q) && !c.game.toLowerCase().includes(q)) return false;
+    if (currentFilter==='hero'     && c.type!=='hero')     return false;
+    if (currentFilter==='villain'  && c.type!=='villain')  return false;
+    if (currentFilter==='antihero' && c.type!=='antihero') return false;
+    if (currentFilter==='pet'      && c.type!=='pet')      return false;
+    if (currentFilter==='unplayed') {
+      if (c.type==='pet') return false; // pets excluded from unplayed
+      const d = getData(c);
+      if (c.type==='antihero') return !d.played || !d.defeated;
+      if (c.type==='hero')     return !d.played;
+      if (c.type==='villain')  return !d.defeated;
+    }
+    return true;
+  });
+
+  if (!chars.length) {
+    box.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No Results</div><div class="empty-body">Try a different filter or search term.</div></div>`;
+    return;
+  }
+
+  const grouped = !q && currentFilter !== 'unplayed' && currentFilter !== 'pet';
+
+  if (grouped) {
+    const waves = {};
+    chars.forEach(c => {
+      const w = c.version || '0';
+      if (!waves[w]) waves[w] = [];
+      waves[w].push(c);
+    });
+    let html = '';
+    ['1','2','3','0'].forEach(w => {
+      if (!waves[w]) return;
+      html += `<div class="wave-header">
+        <div class="wave-banner ${waveCls(w)}">${waveName(w)}</div>
+        <div class="wave-rule"></div>
+        <div class="wave-count">${waves[w].length} CHARACTERS</div>
+      </div>
+      <div class="roster-grid">${waves[w].map((c,i)=>cardHTML(c,i)).join('')}</div>`;
+    });
+    box.innerHTML = html;
+  } else {
+    box.innerHTML = `<div class="roster-grid">${chars.map((c,i)=>cardHTML(c,i)).join('')}</div>`;
+  }
+}
+
+function cardHTML(c, i) {
+  const d      = getData(c);
+  const key    = cKey(c).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const isDone = (c.type==='hero'&&d.played)||(c.type==='villain'&&d.defeated)||(c.type==='antihero'&&d.played&&d.defeated);
+  const typeCls = c.type==='villain' ? 'is-villain' : c.type==='antihero' ? 'is-antihero' : c.type==='pet' ? 'is-pet' : '';
+  const typeLabels = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', pet:'Pet' };
+  const typeLabel = typeLabels[c.type] || 'Hero';
+
+  const artHtml = c.artUrl
+    ? `<img class="char-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="char-art-placeholder" style="display:none">${c.name[0]}</div>`
+    : `<div class="char-art-placeholder">${c.name[0]}</div>`;
+
+  const ps = (d.played   && (c.type==='hero'   ||c.type==='antihero')) ? `<div class="played-stamp">PLAYED</div>`   : '';
+  const ds = (d.defeated && (c.type==='villain'||c.type==='antihero')) ? `<div class="defeated-stamp">DEFEATED</div>` : '';
+
+  return `<div class="char-card ${typeCls} ${isDone?'is-done':''}"
+      style="animation-delay:${Math.min(i*.025,.5)}s"
+      onclick="openModal('${key}')">
+    <div class="char-art-wrap">${artHtml}${ps}${ds}</div>
+    <div class="char-info">
+      <div class="char-name">${c.name}</div>
+      <div class="char-game">${c.game}</div>
+      <div class="char-tags"><span class="ctag ctag-${c.type}">${typeLabel}</span></div>
+    </div>
+  </div>`;
+}
+
+// MODAL
+function openModal(key) {
+  const c = allChars.find(x => cKey(x)===key);
+  if (!c) return;
+  currentModalKey = key;
+  const d = getData(c);
+
+  document.getElementById('modalTitle').textContent = c.name;
+  document.getElementById('modalSub').textContent   = `${waveName(c.version)} • ${c.game}`;
+
+  const badge = document.getElementById('modalTypeBadge');
+  const typeLabels2 = { hero:'Hero', villain:'Villain', antihero:'Anti-Hero', pet:'Pet' };
+  badge.textContent = typeLabels2[c.type] || c.type;
+  badge.className   = `modal-type-badge ${c.type}`;
+
+  const art = document.getElementById('modalArt');
+  if (c.artUrl) { art.src=proxyImg(c.artUrl); art.style.display='block'; } else { art.style.display='none'; }
+
+  document.getElementById('modalPlayed').checked   = d.played;
+  document.getElementById('modalDefeated').checked = d.defeated;
+  document.getElementById('modalNotes').value       = d.notes;
+  document.getElementById('charModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('charModal').classList.remove('open');
+  currentModalKey = null;
+}
+
+function saveModal() {
+  if (!currentModalKey) return;
+  localOverrides[currentModalKey] = {
+    played:   document.getElementById('modalPlayed').checked,
+    defeated: document.getElementById('modalDefeated').checked,
+    notes:    document.getElementById('modalNotes').value,
+  };
+  closeModal(); updateStats(); renderRoster();
+}
+
+// ASSEMBLE
+function setMode(m) {
+  assembleMode = m;
+  document.getElementById('modeAll').classList.toggle('active', m==='all');
+  document.getElementById('modeUnplayed').classList.toggle('active', m==='unplayed');
+  document.getElementById('modeDesc').innerHTML = m==='all'
+    ? `Drawing from <em>all characters</em>`
+    : `Drawing from <em>unplayed heroes</em> &amp; <em>undefeated villains</em>`;
+  resetAssemble();
+}
+
+function resetAssemble() {
+  pendingVillain = null;
+  document.getElementById('villainSection').style.display = 'none';
+  document.getElementById('assembledBanner').classList.remove('show');
+  const st = document.getElementById('assembleStatus');
+  st.classList.remove('visible'); st.textContent = '';
+  for (let i=0;i<4;i++) {
+    const s = document.getElementById('slot'+i);
+    s.className = 'hero-slot';
+    s.innerHTML = `<div class="slot-num">${i+1}</div><div class="slot-label">HERO</div>`;
+  }
+  const vs = document.getElementById('villainSlot');
+  vs.className = 'villain-slot';
+  vs.innerHTML = `<div class="mystery"><div class="mystery-q">?</div></div>`;
+  const rb = document.getElementById('revealBtn');
+  rb.textContent = '☠ REVEAL YOUR DOOM ☠';
+  rb.className   = 'btn-reveal';
+  rb.onclick     = revealVillain;
+  rb.disabled    = false;
+}
+
+async function assembleTeam() {
+  if (!allChars.length) { alert('Sync your roster first!'); return; }
+  resetAssemble();
+  const btn = document.getElementById('assembleBtn');
+  btn.disabled = true;
+
+  // Pets are excluded from random draw; Anti-Heroes can appear in either pool
+  let heroPool = allChars.filter(c => c.type==='hero'||c.type==='antihero');
+  let vilPool  = allChars.filter(c => c.type==='villain'||c.type==='antihero');
+
+  if (assembleMode==='unplayed') {
+    heroPool = heroPool.filter(c => !getData(c).played);
+    vilPool  = vilPool.filter(c  => !getData(c).defeated);
+  }
+
+  if (heroPool.length < 4) { alert(`Need 4 heroes — only ${heroPool.length} available!`); btn.disabled=false; return; }
+  if (vilPool.length  < 1) { alert('No villains available for this mode!'); btn.disabled=false; return; }
+
+  const heroes = shuffle(heroPool).slice(0,4);
+  pendingVillain = shuffle(vilPool)[0];
+
+  doFlash(false);
+
+  const statusEl = document.getElementById('assembleStatus');
+  const msgs = ['ASSEMBLING…','CALLING THE HEROES…','UNITED WE STAND…','TEAM COMPLETE!'];
+
+  for (let i=0;i<4;i++) {
+    statusEl.textContent = msgs[i];
+    statusEl.classList.add('visible');
+    await delay(i===0 ? 300 : 100);
+    revealSlot(i, heroes[i]);
+    await delay(600);
+  }
+
+  statusEl.classList.remove('visible');
+  await delay(200);
+  document.getElementById('assembledBanner').classList.add('show');
+  await delay(500);
+  document.getElementById('villainSection').style.display = 'block';
+  document.getElementById('villainSection').scrollIntoView({behavior:'smooth',block:'nearest'});
+  btn.disabled = false;
+}
+
+function revealSlot(i, c) {
+  const slot = document.getElementById('slot'+i);
+  const art  = c.artUrl
+    ? `<img class="slot-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none'">`
+    : `<div class="slot-art-placeholder">${c.name[0]}</div>`;
+  slot.innerHTML = art + `<div class="slot-caption">
+    <div class="slot-caption-name">${c.name}</div>
+    <div class="slot-caption-game">${c.game}</div>
+  </div>`;
+  slot.classList.add('revealed');
+}
+
+async function revealVillain() {
+  if (!pendingVillain) return;
+  const btn = document.getElementById('revealBtn');
+  btn.disabled = true;
+  doFlash(true);
+  await delay(150);
+  const slot = document.getElementById('villainSlot');
+  const c    = pendingVillain;
+  const art  = c.artUrl
+    ? `<img class="slot-art" src="${proxyImg(c.artUrl)}" alt="${c.name}" onerror="this.style.display='none'">`
+    : `<div class="slot-art-placeholder" style="background:var(--ink);color:rgba(255,255,255,0.1)">${c.name[0]}</div>`;
+  slot.innerHTML = art + `<div class="slot-caption">
+    <div class="slot-caption-name">${c.name}</div>
+    <div class="slot-caption-game">${c.game}</div>
+  </div>`;
+  slot.classList.add('revealed');
+  btn.textContent = '⚡ REASSEMBLE';
+  btn.className   = 'btn-reveal done';
+  btn.disabled    = false;
+  btn.onclick     = assembleTeam;
+}
+
+function doFlash(villain) {
+  const el = document.getElementById('flashOverlay');
+  el.className = '';
+  void el.offsetWidth;
+  el.className = villain ? 'flash-overlay villain-go' : 'flash-overlay go';
+  setTimeout(() => el.className='flash-overlay', 500);
+}
+
+// NAV
+function updateArrows(view) {
+  const right = document.getElementById('arrowRight');
+  const left  = document.getElementById('arrowLeft');
+  // Right arrow (→ assemble): show on roster only
+  right.style.display = view === 'roster'   ? 'block' : 'none';
+  // Left arrow (← roster): show on assemble only
+  left.style.display  = view === 'assemble' ? 'block' : 'none';
+}
+
+function goToView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const viewEl = document.getElementById('view-'+view);
+  if (viewEl) viewEl.classList.add('active');
+  document.getElementById('fabSettings').classList.remove('active-settings');
+  updateArrows(view);
+}
+
+function goHome() {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-home').classList.add('active');
+  document.getElementById('fabSettings').classList.remove('active-settings');
+  updateArrows('home');
+}
+
+function toggleSettings() {
+  const fab   = document.getElementById('fabSettings');
+  const isOpen = document.getElementById('view-settings').classList.contains('active');
+  if (isOpen) {
+    goHome();
+  } else {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-settings').classList.add('active');
+    fab.classList.add('active-settings');
+    updateArrows('settings');
+  }
+}
+
+// kept for any legacy calls — routes through goToView
+function switchView(view) {
+  goToView(view);
+}
+
+// INIT
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('mu_apiKey');
+  if (saved) document.getElementById('apiKeyInput').value = saved;
+  document.getElementById('charModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('charModal')) closeModal();
+  });
+});
+</script>
+</body>
+</html>
