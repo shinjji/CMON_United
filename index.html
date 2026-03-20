@@ -286,14 +286,54 @@
   /* ASSEMBLE */
   .assemble-view { max-width: 860px; margin: 0 auto; }
 
+  .assemble-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .assemble-stat {
+    flex: 1;
+    background: var(--panel-cream);
+    border: 3px solid var(--border-ink);
+    box-shadow: 3px 3px 0 var(--border-ink);
+    padding: 8px 14px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .assemble-stat-num {
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .assemble-stat-num em {
+    font-style: normal;
+    color: var(--red);
+  }
+
+  .assemble-stat-label {
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(26,16,8,0.4);
+    margin-top: 2px;
+  }
+
   .mode-toggle {
+    flex: 2;
     display: flex; border: 3px solid var(--border-ink);
-    box-shadow: 4px 4px 0 var(--border-ink); overflow: hidden; margin-bottom: 20px;
+    box-shadow: 4px 4px 0 var(--border-ink); overflow: hidden;
   }
 
   .mode-btn {
-    flex: 1; padding: 12px;
-    font-family: 'Bangers', cursive; font-size: 20px; letter-spacing: 2px;
+    flex: 1; padding: 8px 12px;
+    font-family: 'Bangers', cursive; font-size: 18px; letter-spacing: 2px;
     cursor: pointer; color: rgba(26,16,8,0.4); background: var(--white);
     border: none; border-right: 3px solid var(--border-ink); transition: all 0.15s;
   }
@@ -846,6 +886,7 @@
   .list-filter-select:focus { box-shadow: 4px 4px 0 var(--blue); border-color: var(--blue); }
 
   .filter-btn.list-toggle { border-style: dashed; margin-left: auto; }
+  .filter-btn.incomplete-btn.active { background: var(--red); color: var(--white); }
   .filter-btn.list-toggle.active {
     background: var(--ink); color: var(--yellow);
     border-style: solid;
@@ -926,6 +967,79 @@
   .list-status.done     { background: #E6FFE6; color: var(--green); border-color: var(--green); }
   .list-status.pending  { background: #FFE6E6; color: var(--red); border-color: var(--red); }
   .list-status.na       { background: var(--panel-tan); color: #aaa; border-color: #ccc; }
+
+  /* ══════════════════════════════
+     MOBILE ONLY (max-width: 699px)
+  ══════════════════════════════ */
+  @media (max-width: 699px) {
+
+    /* Reduce modal width */
+    .modal { max-width: 80vw; }
+
+    /* Match stamp size to badge size */
+    .modal-stamps .played-stamp,
+    .modal-stamps .defeated-stamp {
+      font-size: 14px;
+      padding: 2px 10px;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    /* Stats row stacks vertically on mobile */
+    .assemble-stats-row {
+      flex-direction: column;
+    }
+    .assemble-stat { width: 100%; }
+    .mode-toggle { width: 100%; }
+
+    /* Hide side arrows */
+    .side-arrow { display: none !important; }
+
+    /* Assemble + Doom buttons smaller, side by side */
+    .assemble-btn-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-assemble {
+      font-size: 20px;
+      letter-spacing: 2px;
+      padding: 10px 20px;
+    }
+
+    .villain-slot-wrap .btn-reveal {
+      font-size: 20px;
+      letter-spacing: 2px;
+      padding: 10px 20px;
+    }
+
+    /* Move LIST toggle next to Companions (remove margin-left: auto) */
+    .filter-btn.list-toggle {
+      margin-left: 0;
+    }
+
+    /* Modal: stack vertically, image full width on top */
+    .modal-inner {
+      flex-direction: column;
+    }
+
+    .modal-art-wrap {
+      flex: none;
+      width: 100%;
+      border-right: none;
+      border-bottom: 3px solid var(--border-ink);
+    }
+
+    .modal-art {
+      width: 100%;
+      height: auto;
+      max-height: 80vw;
+      object-fit: cover;
+    }
+
+    .modal-body {
+      width: 100%;
+    }
+  }
 </style>
 </head>
 <body>
@@ -976,6 +1090,7 @@
         <option value="defeated">Defeated</option>
         <option value="notdefeated">Not Yet Defeated</option>
       </select>
+      <button class="filter-btn incomplete-btn active" id="incompleteToggle" onclick="toggleIncomplete(this)">INCOMPLETE</button>
       <button class="filter-btn list-toggle active" onclick="toggleListView(document.getElementById('listToggle'))">☰ LIST</button>
     </div>
 
@@ -987,9 +1102,21 @@
   <div class="view" id="view-assemble">
     <div class="assemble-view">
 
-      <div class="mode-toggle">
-        <button class="mode-btn active" id="modeAll"      onclick="setMode('all')">⭐ FULL ROSTER</button>
-        <button class="mode-btn"        id="modeUnplayed" onclick="setMode('unplayed')">🆕 UNPLAYED ONLY</button>
+      <div class="assemble-stats-row">
+        <div class="assemble-stat">
+          <div class="assemble-stat-num" id="statPct">—</div>
+          <div class="assemble-stat-label">COMPLETED</div>
+        </div>
+
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeAll"      onclick="setMode('all')">⭐ FULL ROSTER</button>
+          <button class="mode-btn"        id="modeUnplayed" onclick="setMode('unplayed')">🆕 UNPLAYED ONLY</button>
+        </div>
+
+        <div class="assemble-stat">
+          <div class="assemble-stat-num" id="statRemaining">—</div>
+          <div class="assemble-stat-label">REMAINING</div>
+        </div>
       </div>
 
       <div class="mode-desc" id="modeDesc">Drawing from <em>all characters</em></div>
@@ -1053,7 +1180,9 @@
   <!-- SETTINGS -->
   <div class="view view-settings" id="view-settings">
     <div class="settings-panel">
-      <button class="btn-sync" onclick="goHome()" style="margin-bottom:20px;background:var(--ink);">🏠 HOME</button>
+      <button class="btn-sync" onclick="goHome()" style="margin-bottom:8px;background:var(--ink);">🏠 HOME</button>
+      <button class="btn-sync" onclick="goToView('roster')" style="margin-bottom:8px;background:var(--blue);">📋 VIEW ROSTER</button>
+      <button class="btn-sync" onclick="goToView('assemble')" style="margin-bottom:20px;background:var(--red);">⚡ ASSEMBLE TEAM!</button>
       <div class="settings-title">⚙️ SETTINGS</div>
       <label class="settings-label">🔑 GOOGLE SHEETS API KEY</label>
       <input class="api-input" type="password" id="apiKeyInput" placeholder="Paste your API key here…">
@@ -1227,6 +1356,7 @@ async function syncSheet() {
     if (svcKey) localStorage.setItem('mu_serviceKey', svcKey);
     localStorage.setItem('mu_chars', JSON.stringify(allChars));
     updateStats();
+    updateAssembleStats();
     renderRoster();
     setStatus(`✓ ${allChars.length} characters loaded`, 'ok');
   } catch(e) {
@@ -1247,6 +1377,7 @@ function updateStats() {
 
 // ROSTER
 let isListView = false;
+let listIncompleteOnly = true; // default ON
 
 function setFilter(f, btn) {
   currentFilter = f;
@@ -1269,6 +1400,15 @@ function resetListFilters() {
   document.getElementById('listFilterGame').value = '';
   document.getElementById('listFilterType').value = '';
   document.getElementById('listFilterStatus').value = '';
+  listIncompleteOnly = true;
+  const incBtn = document.getElementById('incompleteToggle');
+  if (incBtn) incBtn.classList.add('active');
+  renderList();
+}
+
+function toggleIncomplete(btn) {
+  listIncompleteOnly = !listIncompleteOnly;
+  btn.classList.toggle('active', listIncompleteOnly);
   renderList();
 }
 
@@ -1342,7 +1482,17 @@ function renderList() {
     return;
   }
 
-  let chars = [...allChars].sort((a,b) => a.name.localeCompare(b.name));
+  let chars = [...allChars].sort((a,b) => {
+    // Wave: extract numeric value from version string
+    const waveA = parseFloat((a.version||'').match(/[\d.]+/)?.[0] || 999);
+    const waveB = parseFloat((b.version||'').match(/[\d.]+/)?.[0] || 999);
+    if (waveA !== waveB) return waveA - waveB;
+    // Expansion
+    const gameComp = (a.game||'').localeCompare(b.game||'');
+    if (gameComp !== 0) return gameComp;
+    // Name
+    return a.name.localeCompare(b.name);
+  });
 
   chars = chars.filter(c => {
     if (q && !c.name.toLowerCase().includes(q) && !c.game.toLowerCase().includes(q)) return false;
@@ -1356,6 +1506,14 @@ function renderList() {
       if (status === 'unplayed'    && d.played !== false)   return false;
       if (status === 'defeated'    && d.defeated !== true)  return false;
       if (status === 'notdefeated' && d.defeated !== false) return false;
+    }
+    // INCOMPLETE toggle: show only unplayed heroes OR undefeated villains
+    if (listIncompleteOnly) {
+      const d = getData(c);
+      const isIncomplete =
+        (isPlayable(c)   && (hasType(c,'hero')||hasType(c,'herov2')||hasType(c,'antihero')) && d.played   === false) ||
+        (isDefeatable(c) && (hasType(c,'villain')||hasType(c,'antihero'))                   && d.defeated === false);
+      if (!isIncomplete) return false;
     }
     return true;
   });
@@ -1399,8 +1557,8 @@ function renderList() {
     <thead><tr>
       <th></th>
       <th>NAME</th>
-      <th>VERSION</th>
-      <th>GAME</th>
+      <th>WAVE</th>
+      <th>EXPANSION</th>
       <th>TYPE</th>
       <th>PLAYED</th>
       <th>DEFEATED</th>
@@ -1609,7 +1767,7 @@ async function saveModal() {
 
   // Save locally first
   localOverrides[currentModalKey] = { played, defeated, notes };
-  closeModal(); updateStats(); renderRoster();
+  closeModal(); updateStats(); updateAssembleStats(); renderRoster();
 
   // Write back to Google Sheet
   try {
@@ -1860,7 +2018,7 @@ function goToView(view) {
   document.getElementById('fabSettings').classList.remove('active-settings');
   updateArrows(view);
   if (view === 'roster')  renderRoster();
-  if (view === 'assemble') restoreAssembleState();
+  if (view === 'assemble') { restoreAssembleState(); updateAssembleStats(); }
 }
 
 function goHome() {
@@ -1916,6 +2074,50 @@ function openSlotLightbox(c, isVillain) {
 
 function closeSlotLightbox() {
   document.getElementById('slotLightbox').classList.remove('open');
+}
+
+// ASSEMBLE STATS
+function updateAssembleStats() {
+  if (!allChars.length) return;
+  const total = allChars.length;
+  let completed = 0;
+
+  allChars.forEach(c => {
+    const d = getData(c);
+    const type = c.types || ['hero'];
+
+    // Companions always count as complete
+    if (type.every(t => t === 'companion')) { completed++; return; }
+
+    // Hero/herov2: played === true
+    const isHero = hasType(c,'hero') || hasType(c,'herov2');
+    const isVil  = hasType(c,'villain');
+    const isAnti = hasType(c,'antihero');
+
+    if (isAnti) {
+      // Anti-hero: both played and defeated must be true
+      const playedOk   = !isPlayable(c)   || d.played   === true;
+      const defeatedOk = !isDefeatable(c) || d.defeated === true;
+      if (playedOk && defeatedOk) completed++;
+    } else if (isHero && !isVil) {
+      if (!isPlayable(c) || d.played === true) completed++;
+    } else if (isVil && !isHero) {
+      if (!isDefeatable(c) || d.defeated === true) completed++;
+    } else {
+      // Multi-type non-antihero edge case — count if all applicable done
+      const playedOk   = !isPlayable(c)   || d.played   === true;
+      const defeatedOk = !isDefeatable(c) || d.defeated === true;
+      if (playedOk && defeatedOk) completed++;
+    }
+  });
+
+  const pct = total > 0 ? Math.round(completed / total * 100) : 0;
+  const remaining = total - completed;
+
+  const pctEl = document.getElementById('statPct');
+  const remEl = document.getElementById('statRemaining');
+  if (pctEl) pctEl.innerHTML = `<em>${pct}%</em>`;
+  if (remEl) remEl.innerHTML = `<em>${remaining}</em>/<span style="font-size:16px">${total}</span>`;
 }
 
 // ASSEMBLE STATE PERSISTENCE
@@ -2005,6 +2207,7 @@ window.addEventListener('load', () => {
     try {
       allChars = JSON.parse(savedChars);
       updateStats();
+      updateAssembleStats();
       renderRoster();
       setStatus(`✓ ${allChars.length} characters (cached)`, 'ok');
     } catch(e) {
