@@ -1018,6 +1018,11 @@
       margin-left: 0;
     }
 
+    /* Force minimum 2 cards per row on mobile */
+    .roster-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
     /* Modal: stack vertically, image full width on top */
     .modal-inner {
       flex-direction: column;
